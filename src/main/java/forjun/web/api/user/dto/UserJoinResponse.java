@@ -12,7 +12,7 @@ public class UserJoinResponse {
     private String userName;
     private String email;
 
-    public static UserJoinResponse fromService(UserDto userDTO){
+    public static UserJoinResponse fromDto(UserDto userDTO){
         return new UserJoinResponse(userDTO.getUserId(), userDTO.getUserName(), userDTO.getEmail());
     }
 }

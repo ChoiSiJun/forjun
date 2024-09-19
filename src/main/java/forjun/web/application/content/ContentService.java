@@ -18,21 +18,21 @@ public class ContentService
 {
     private final ContentRepo contentRepo;
 
-    //콘텐츠 저장
-    public ContentDto setContent(ContentDto contentDto){
-        contentRepo.save(contentDto.toEntity());
-        return contentDto;
-    }
 
-    //콘텐츠 업데이트
-    ContentDto updateContent(ContentDto contentDto){
 
-        ContentEntity contentEntity = contentRepo.findById(contentDto.getId()).orElseThrow(() -> new EntityNotFoundException("Content not Found"));
-        contentEntity.updateContent()
-                .title(contentDto.getTitle())
-                .author(contentDto.getAuthor())
-                .content(contentDto.getContent())
-                .build();
+    //콘텐츠 저장 & 업데이트
+    ContentDto setContent(ContentDto contentDto){
+        ContentEntity contentEntity = contentRepo.findById(contentDto.getId())
+                        .map(content -> {
+                            content.updateContent()
+                                    .title(contentDto.getTitle())
+                                    .contentType(contentDto.getContentType())
+                                    .content(contentDto.getContent())
+                                    .author(contentDto.getAuthor())
+                                    .build();
+                            return content;
+                        }).orElse(contentDto.toEntity());
+
         contentRepo.save(contentEntity);
 
         return ContentDto.fromEntity(contentEntity);
@@ -49,5 +49,15 @@ public class ContentService
         return  contentRepo.findAll().stream()
                 .map(ContentDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    //콘텐츠 삭제하기
+    public void deleteContent(int contentId){
+        try {
+            contentRepo.deleteById(contentId);
+        }catch(Exception e){
+            throw new RuntimeException("Delete Content Failed");
+        }
+
     }
 }

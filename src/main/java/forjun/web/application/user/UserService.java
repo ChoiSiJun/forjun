@@ -5,6 +5,7 @@ import forjun.web.application.user.dto.UserDto;
 import forjun.web.domain.user.UserEntity;
 
 import forjun.web.domain.user.UserRepo;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,15 +20,26 @@ public class UserService {
 
     private final UserRepo userRepo;
 
-    //유저 저장
+    //유저 저장 & 수정
     public UserDto saveUser(UserDto userDto){
+
+       UserEntity userEntity = userRepo.findById(userDto.getUserId())
+                        .map(user -> {
+                                    user.updateUser()
+                                            .userName(userDto.getUserName())
+                                            .email(userDto.getEmail())
+                                            .build();
+                                    return user;
+                                }
+                        ).orElse(userDto.toEntity());
+
         userRepo.save(userDto.toEntity());
         return userDto;
     }
 
     //유저 정보
     public UserDto viewUser(String userid){
-        return UserDto.fromEntity(userRepo.findByUserId(userid));
+        return UserDto.fromEntity(userRepo.findById(userid).orElseThrow( ()-> new EntityNotFoundException("User with id " + userid + " not found") ));
     }
 
     //유저 리스트 ( 이름 )

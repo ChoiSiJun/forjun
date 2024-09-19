@@ -22,14 +22,22 @@ public class UserApi {
     @PostMapping(name="/user/save")
     public ResponseEntity<UserJoinResponse> saveUser(UserJoinRequest userJoinRequest) {
 
-        UserDto userDTO = userService.saveUser(userJoinRequest);
-        return ResponseEntity.ok(UserJoinResponse.fromService(userDTO));
+        UserDto userDTO = UserDto.builder()
+                .userId(userJoinRequest.getUserId())
+                .userName(userJoinRequest.getUserName())
+                .password(userJoinRequest.getPassword())
+                .email(userJoinRequest.getEmail())
+                .build();
+
+        UserDto result = userService.saveUser(userDTO);
+
+        return ResponseEntity.ok(UserJoinResponse.fromDto(result));
     }
 
     /** 이용자 아이디로 정보조회 **/
     @GetMapping(name="/user/view/{userId}")
     public ResponseEntity<UserInfoResponse> viewUser(@PathVariable(name="userId") String userId){
         UserDto userDTO = userService.viewUser(userId);
-        return ResponseEntity.ok(UserInfoResponse.fromService(userDTO));
+        return ResponseEntity.ok(UserInfoResponse.fromDto(userDTO));
     }
 }

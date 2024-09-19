@@ -2,10 +2,12 @@ package forjun.web.application.user.dto;
 
 import forjun.web.domain.user.UserEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@Builder
 public class UserDto {
 
     private String userId;
@@ -23,6 +25,11 @@ public class UserDto {
     }
 
     public static UserDto fromEntity(UserEntity userEntity){
-        return new UserDto(userEntity.getUserId(), userEntity.getUserName(), userEntity.getPassword(), userEntity.getEmail());
+        return UserDto.builder()
+                .userId(userEntity.getUserId())
+                .userName(userEntity.getUserName())
+                .password(userEntity.getPassword())
+                .email(userEntity.getEmail())
+                .build();
     }
 }

@@ -11,6 +11,8 @@ public class ContentDto {
 
     private int id;
 
+    private String contentType;
+
     private String title;
 
     private String content;
@@ -25,6 +27,7 @@ public class ContentDto {
 
         return ContentDto.builder()
                 .id(contentEntity.getId())
+                .contentType(contentEntity.getContentType())
                 .title(contentEntity.getTitle())
                 .content(contentEntity.getContent())
                 .author(contentEntity.getAuthor())
@@ -36,6 +39,7 @@ public class ContentDto {
     public ContentEntity toEntity(){
         return ContentEntity.builder()
                 .id(this.id)
+                .contentType(this.contentType)
                 .title(this.title)
                 .author(this.author)
                 .content(this.content)

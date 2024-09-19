@@ -8,10 +8,11 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Table;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Table
 @RequiredArgsConstructor
+@Transactional
 public class HistoryService {
 
     private final HistoryRepo historyRepo;
@@ -37,5 +38,15 @@ public class HistoryService {
         HistoryEntity historyEntity = historyRepo.findById(historyId).orElseThrow( ()-> new EntityNotFoundException("Not Found Entity"));
         return HistoryDto.fromEntity(historyEntity);
         
+    }
+
+    //이력 삭제하기
+    public void deleteHistory(int historyId){
+        try {
+            historyRepo.deleteById(historyId);
+        }catch(Exception e){
+            throw new RuntimeException("Delete History Failed");
+        }
+
     }
 }
