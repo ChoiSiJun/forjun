@@ -3,6 +3,7 @@ package forjun.web.application.content;
 import forjun.web.application.content.dto.ContentDto;
 import forjun.web.domain.content.ContentEntity;
 import forjun.web.domain.content.ContentRepo;
+import forjun.web.exception.content.ContentException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,24 +19,26 @@ public class ContentService
 {
     private final ContentRepo contentRepo;
 
-
-
     //콘텐츠 저장 & 업데이트
     ContentDto setContent(ContentDto contentDto){
-        ContentEntity contentEntity = contentRepo.findById(contentDto.getId())
-                        .map(content -> {
-                            content.updateContent()
-                                    .title(contentDto.getTitle())
-                                    .contentType(contentDto.getContentType())
-                                    .content(contentDto.getContent())
-                                    .author(contentDto.getAuthor())
-                                    .build();
-                            return content;
-                        }).orElse(contentDto.toEntity());
 
-        contentRepo.save(contentEntity);
+        try {
+            ContentEntity contentEntity = contentRepo.findById(contentDto.getId())
+                    .map(content -> {
+                        ContentEntity.builder()
+                                .title(contentDto.getTitle())
+                                .contentType(contentDto.getContentType())
+                                .content(contentDto.getContent())
+                                .author(contentDto.getAuthor())
+                                .build();
+                        return content;
+                    }).orElse(contentDto.toEntity());
 
-        return ContentDto.fromEntity(contentEntity);
+            contentRepo.save(contentEntity);
+            return ContentDto.fromEntity(contentEntity);
+        }catch (Exception e){
+            throw new ContentException(e.getMessage());
+        }
     }
 
     //콘텐츠 정보 가져오기

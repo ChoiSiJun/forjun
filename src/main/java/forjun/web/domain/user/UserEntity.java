@@ -26,21 +26,9 @@ public class UserEntity {
 
     private String email;
 
-    //유저정보 변경
-    @Builder(builderMethodName = "updateUser")
-    public void updateUser(String userName , String email){
-
-        if(userName != null && !userName.isEmpty()){
-            this.userName = userName;
-        }
-
-        if(email != null && !email.isEmpty()){
-            this.email = email;
-        }
-    }
+    private String authority;
 
     //패스워드 변경
-    @Builder(builderMethodName = "updatePassword")
     public void updatePassword(String password){
         if(password != null && !password.isEmpty()){
             this.password = password;

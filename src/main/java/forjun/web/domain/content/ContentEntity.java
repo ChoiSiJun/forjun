@@ -35,7 +35,6 @@ public class ContentEntity {
 
     private LocalDateTime editDate;
 
-    @Builder(builderMethodName = "updateContent")
     public void updateContent(String contentType , String title, String content, String author){
 
         if(contentType != null && contentType.isEmpty()){
