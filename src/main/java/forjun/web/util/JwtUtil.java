@@ -1,7 +1,7 @@
 package forjun.web.util;
 
 
-import forjun.web.exception.authentication.NotJwtGenerate;
+import forjun.web.exception.application.authentication.NotJwtGenerate;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

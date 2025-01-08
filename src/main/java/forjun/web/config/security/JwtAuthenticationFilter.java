@@ -1,8 +1,9 @@
 package forjun.web.config.security;
 
-import forjun.web.application.user.UserService;
-import forjun.web.application.user.dto.UserDto;
-import forjun.web.exception.authentication.NotJwtGenerate;
+
+import forjun.web.exception.application.authentication.NotJwtGenerate;
+import forjun.web.module.user.application.UserService;
+import forjun.web.module.user.domain.User;
 import forjun.web.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -43,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (id != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDto userDto = userService.viewUser(id);
+            User userDto = userService.viewUser(id);
 
             //권한부여
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
