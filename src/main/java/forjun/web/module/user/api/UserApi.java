@@ -31,7 +31,7 @@ public class UserApi {
                 .build();
 
         User result = userService.saveUser(user);
-        return ResponseEntity.ok(UserJoinResponse.fromDto(result));
+        return ResponseEntity.ok(UserJoinResponse.fromDomain(result));
     }
 
     /**
@@ -46,19 +46,19 @@ public class UserApi {
     @PostMapping("/user/view/{userId}")
     public ResponseEntity<UserInfoResponse> viewUser(@PathVariable(name="userId") String userId){
         User user = userService.viewUser(userId);
-        return ResponseEntity.ok(UserInfoResponse.fromDto(user));
+        return ResponseEntity.ok(UserInfoResponse.fromDomain(user));
     }
 
     /** 이용자 로그인**/
     @PostMapping("/user/login")
     public ResponseEntity<UserLoginResponse> loginUser(@Valid @RequestBody UserLoginRequest userLoginRequest){
 
-        User userDto = User.builder()
+        User user = User.builder()
                 .userId(userLoginRequest.getLoginId())
                 .password(userLoginRequest.getLoginPassword())
                 .build();
 
-        User userDTO = userService.Authentication(userDto);
-        return ResponseEntity.ok(UserLoginResponse.fromDto(userDTO , jwtUtil));
+        user = userService.Authentication(user);
+        return ResponseEntity.ok(UserLoginResponse.fromDomain(user , jwtUtil));
     }
 }

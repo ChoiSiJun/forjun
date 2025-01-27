@@ -11,7 +11,7 @@ public class UserLoginResponse
 {
     private String token;
 
-    public static UserLoginResponse fromDto(User user , JwtUtil jwtUtil){
+    public static UserLoginResponse fromDomain(User user , JwtUtil jwtUtil){
         return new UserLoginResponse(jwtUtil.generateToken(user.getUserId()));
     }
 }

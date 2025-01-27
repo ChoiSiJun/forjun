@@ -1,8 +1,6 @@
 package forjun.web.module.history.infrastructure.adapter;
 
 import forjun.web.exception.infrastructure.JpaException;
-import forjun.web.module.content.domain.Content;
-import forjun.web.module.content.infrastructure.repository.jpa.ContentEntity;
 import forjun.web.module.history.application.port.HistoryPort;
 import forjun.web.module.history.domain.History;
 import forjun.web.module.history.infrastructure.repository.jpa.HistoryEntity;
@@ -16,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-public class HistoryAdapter implements HistoryPort {
+public class HistoryJpaAdapter implements HistoryPort {
 
     private final HistoryRepo historyRepo;
     @Override

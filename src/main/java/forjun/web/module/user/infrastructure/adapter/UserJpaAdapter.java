@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Repository
-public class UserAdapter implements UserPort {
+public class UserJpaAdapter implements UserPort {
 
     private final UserRepo userRepo;
 

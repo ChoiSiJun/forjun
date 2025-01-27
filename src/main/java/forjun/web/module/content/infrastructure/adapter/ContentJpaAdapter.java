@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-public class   ContentAdapter implements ContentPort {
+public class ContentJpaAdapter implements ContentPort {
 
     private final ContentRepo contentRepo;
     @Override

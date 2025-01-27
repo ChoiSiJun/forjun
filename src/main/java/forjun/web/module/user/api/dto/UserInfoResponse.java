@@ -15,7 +15,7 @@ public class UserInfoResponse {
 
     private String email;
 
-    public static UserInfoResponse fromDto(User user){
+    public static UserInfoResponse fromDomain(User user){
         return new UserInfoResponse(user.getUserId(), user.getUserName(), user.getEmail());
     }
 }
