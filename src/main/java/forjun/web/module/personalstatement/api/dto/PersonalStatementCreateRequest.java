@@ -11,8 +11,7 @@ public class PersonalStatementCreateRequest {
     @NotNull(message = "타입값이 없습니다.")
     private String type;
 
-    @NotNull(message = "타이틀이 없습니다.")
-    private String title;
+    private String label;
 
     @NotNull(message = "내용이 없습니다.")
     private String data;

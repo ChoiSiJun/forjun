@@ -16,10 +16,12 @@ public class JwtUtil {
     @Value("${jwt.secretKey}")
     private String secretKey;
 
-    public String generateToken(String subject) {
+    public String generateToken(String subject,String name, String authority) {
         try {
             return Jwts.builder()
                     .setSubject(subject)
+                    .claim("userName",name)
+                    .claim("authority",authority)
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10시간 유효
                     .signWith(SignatureAlgorithm.HS256, secretKey)

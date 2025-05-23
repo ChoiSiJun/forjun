@@ -16,8 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-
-@Table(name="PersonalStatement")
+@Table(name="personal_statement")
 public class PersonalStatementEntity {
 
     @Id
@@ -28,8 +27,7 @@ public class PersonalStatementEntity {
     @NotNull
     private String type;
 
-    @NotNull
-    private String title;
+    private String label;
 
     private String data;
 }

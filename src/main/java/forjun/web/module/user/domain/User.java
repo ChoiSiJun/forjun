@@ -27,6 +27,7 @@ public class User {
                 .userName(this.userName)
                 .password(this.password)
                 .email(EncryptionUtil.encrypt(this.email))
+                .authority(this.authority)
                 .build();
     }
 
@@ -37,6 +38,7 @@ public class User {
                 .userName(userEntity.getUserName())
                 .password(userEntity.getPassword())
                 .email(EncryptionUtil.decrypt(userEntity.getEmail()))
+                .authority(userEntity.getAuthority())
                 .build();
     }
 

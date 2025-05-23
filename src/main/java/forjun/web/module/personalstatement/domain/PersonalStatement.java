@@ -12,7 +12,8 @@ public class PersonalStatement {
 
     private int id;
     private String type;
-    private String title;
+    private String group_type;
+    private String label;
     private String data;
 
     public PersonalStatementEntity toEntity(){
@@ -20,7 +21,7 @@ public class PersonalStatement {
         return PersonalStatementEntity.builder()
                 .id(this.id)
                 .type(this.type)
-                .title(this.title)
+                .label(this.label)
                 .data(this.data)
                 .build();
     }
@@ -29,10 +30,9 @@ public class PersonalStatement {
 
         return PersonalStatement.builder()
                 .id(entity.getId())
-                .data(entity.getData())
                 .type(entity.getType())
-                .title(entity.getTitle())
+                .label(entity.getLabel())
+                .data(entity.getData())
                 .build();
-
     }
 }

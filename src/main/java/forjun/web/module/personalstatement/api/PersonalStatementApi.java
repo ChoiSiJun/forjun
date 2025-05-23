@@ -6,10 +6,10 @@ import forjun.web.module.personalstatement.api.dto.PersonalStatementUpdateReques
 import forjun.web.module.personalstatement.application.PersonalStatementService;
 import forjun.web.module.personalstatement.domain.PersonalStatement;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -24,24 +24,9 @@ public class PersonalStatementApi {
 
         PersonalStatement personalStatement = PersonalStatement.builder()
                         .type(personalStatementCreateRequest.getType())
-                        .title(personalStatementCreateRequest.getTitle())
+                        .label(personalStatementCreateRequest.getLabel())
                         .data(personalStatementCreateRequest.getData())
                         .build();
-
-        personalStatementService.savePersonalStatement(personalStatement);
-
-        return ResponseEntity.ok("자기소개서가 변경되었습니다.");
-    }
-
-    @PutMapping
-    public ResponseEntity<String> updatePersonalStatement(@Valid @RequestBody PersonalStatementUpdateRequest personalStatementUpdateRequest){
-
-        PersonalStatement personalStatement = PersonalStatement.builder()
-                .id(personalStatementUpdateRequest.getId())
-                .type(personalStatementUpdateRequest.getType())
-                .title(personalStatementUpdateRequest.getTitle())
-                .data(personalStatementUpdateRequest.getData())
-                .build();
 
         personalStatementService.savePersonalStatement(personalStatement);
 
@@ -58,4 +43,26 @@ public class PersonalStatementApi {
 
         return ResponseEntity.ok(personalStatementInfoResponseList);
     }
+
+    @PutMapping
+    public ResponseEntity<String> updatePersonalStatement(@Valid @RequestBody PersonalStatementUpdateRequest personalStatementUpdateRequest){
+
+        PersonalStatement personalStatement = PersonalStatement.builder()
+                .id(personalStatementUpdateRequest.getId())
+                .type(personalStatementUpdateRequest.getType())
+                .label(personalStatementUpdateRequest.getLabel())
+                .data(personalStatementUpdateRequest.getData())
+                .build();
+
+        personalStatementService.savePersonalStatement(personalStatement);
+
+        return ResponseEntity.ok("자기소개서가 변경되었습니다.");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePersonalStatement(@PathVariable @Min(1) int id){
+        personalStatementService.deletePersonalStatement(id);
+        return ResponseEntity.ok("자기소개서가 변경되었습니다.");
+    }
+
 }

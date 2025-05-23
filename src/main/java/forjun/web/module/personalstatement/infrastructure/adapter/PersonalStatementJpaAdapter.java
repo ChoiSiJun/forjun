@@ -26,6 +26,11 @@ public class PersonalStatementJpaAdapter implements PersonalStatementPort {
     }
 
     @Override
+    public void deletePersonalStatement(int id) {
+        personalStatementRepo.deleteById(id);
+    }
+
+    @Override
     public List<PersonalStatement> getPersonalStatementList() {
         try {
             return personalStatementRepo.findAll().stream()

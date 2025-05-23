@@ -23,4 +23,9 @@ public class PersonalStatementService {
     public List<PersonalStatement> getPersonalStatementList(){
         return personalStatementJpaAdapter.getPersonalStatementList();
     }
+
+    //자기소개서 삭제
+    public void deletePersonalStatement(int id){
+        personalStatementJpaAdapter.deletePersonalStatement(id);
+    }
 }

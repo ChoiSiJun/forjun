@@ -9,13 +9,13 @@ import lombok.*;
 public class PersonalStatementInfoResponse {
 
     private String type;
-    private String title;
+    private String label;
     private String data;
 
     public static PersonalStatementInfoResponse fromDomain(PersonalStatement personalStatement) {
         return new PersonalStatementInfoResponse(
                 personalStatement.getType(),
-                personalStatement.getTitle(),
+                personalStatement.getLabel(),
                 personalStatement.getData()
         );
     }
