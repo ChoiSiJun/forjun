@@ -5,7 +5,6 @@ import forjun.web.exception.application.authentication.NotJwtValidate;
 import forjun.web.exception.application.authentication.NotMatchPasswordException;
 import forjun.web.exception.application.content.ContentDuplicateException;
 import forjun.web.exception.application.content.ContentNotFoundException;
-import forjun.web.exception.application.history.HistoryDuplicateException;
 import forjun.web.exception.application.history.HistoryNotFoundException;
 import forjun.web.exception.application.user.UserDuplicateException;
 import forjun.web.exception.application.user.UserNotFoundException;
@@ -44,11 +43,6 @@ public class GlobalExceptionHandler {
     }
 
     //히스토리 관련 Exception
-    @ExceptionHandler(HistoryDuplicateException.class)
-    public ResponseEntity<String> handleHistoryDuplicateException(HistoryDuplicateException e) {
-        return new ResponseEntity<>(e.getMessage() , HttpStatus.CONFLICT);
-    }
-
     @ExceptionHandler(HistoryNotFoundException.class)
     public ResponseEntity<String> handleHistoryNotFoundException(HistoryNotFoundException e) {
         return new ResponseEntity<>(e.getMessage() , HttpStatus.NOT_FOUND);

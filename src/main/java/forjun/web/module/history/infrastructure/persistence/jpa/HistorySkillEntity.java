@@ -1,4 +1,4 @@
-package forjun.web.module.history.infrastructure.repository.jpa;
+package forjun.web.module.history.infrastructure.persistence.jpa;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
 package forjun.web.module.history.domain;
 
 
-import forjun.web.module.history.infrastructure.repository.jpa.HistoryEntity;
-import forjun.web.module.history.infrastructure.repository.jpa.HistorySkillEntity;
+import forjun.web.module.history.infrastructure.persistence.jpa.HistoryEntity;
+import forjun.web.module.history.infrastructure.persistence.jpa.HistorySkillEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,18 +21,25 @@ public class History {
 
     private String category;
 
+    //프로젝트명
     private String project;
 
+    //주제
     private String subject;
 
+    //설명
     private String description;
 
+    //사용스킬
     private List<String> skillList = new ArrayList<>();
 
+    //히스토리 시작날짜
     private LocalDateTime historyStartDate;
 
+    //히스토리 종료날짜
     private LocalDateTime historyEndDate;
 
+    // Entity로 변환
     public HistoryEntity toEntity(){
 
         List<HistorySkillEntity> historySkillList =
@@ -55,7 +62,8 @@ public class History {
                 .build();
     }
 
-    public static History fromEntity(HistoryEntity historyEntity){
+    // 도메인으로 변환
+    public static History toDomain(HistoryEntity historyEntity){
 
         List<String> skillList = historyEntity.getHistorySkill().stream()
                 .map(HistorySkillEntity::getSkill)

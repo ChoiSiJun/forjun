@@ -1,14 +1,15 @@
-package forjun.web.module.history.application.port;
+package forjun.web.module.history.domain.port;
 
 import forjun.web.module.history.domain.History;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface HistoryPort {
 
     public void saveHistory(History history);
 
-    public History getHistory(int historyId);
+    public Optional<History> getHistory(int historyId);
 
     public List<History> getHistorys(int historyId);
 
