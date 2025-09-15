@@ -9,9 +9,9 @@ import lombok.Setter;
 public class UserLoginRequest {
 
     @NotBlank(message = "아이디를 입력하지 않으셨습니다.")
-    private String loginId;
+    private String userId;
     
     @NotBlank(message = "패스워드를 입력하지 않으셨습니다.")
-    private String loginPassword;
+    private String password;
 
 }

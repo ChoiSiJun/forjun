@@ -28,7 +28,7 @@ public class JwtUtil {
                     .compact();
 
         } catch (Exception e){
-            throw new NotJwtGenerate("인증에 실패하였습니다.", subject , secretKey);
+            throw new NotJwtGenerate(e);
         }
     }
 

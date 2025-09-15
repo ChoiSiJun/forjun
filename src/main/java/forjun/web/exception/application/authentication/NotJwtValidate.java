@@ -1,16 +1,12 @@
 package forjun.web.exception.application.authentication;
 
+import forjun.web.exception.AppException;
+import forjun.web.exception.ErrorCode;
+
 //인증관련 에러 클래스
-public class NotJwtValidate extends RuntimeException{
+public class NotJwtValidate extends AppException {
 
-    private String notValidateCause;
-
-    public NotJwtValidate(final String message , String notValidateCause) {
-        super(message);
-        this.notValidateCause = notValidateCause;
-    }
-
-    public String getNotValidateCause() {
-        return notValidateCause;
+    public NotJwtValidate(Exception ex) {
+        super(ErrorCode.JWT_TOKEN_INVALID,ex);
     }
 }

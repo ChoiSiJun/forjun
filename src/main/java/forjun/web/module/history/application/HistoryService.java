@@ -1,68 +1,47 @@
 package forjun.web.module.history.application;
 
-import forjun.web.exception.application.history.HistoryNotFoundException;
-import forjun.web.exception.infrastructure.JpaException;
+import forjun.web.module.history.application.port.in.HistoryQuery;
+import forjun.web.module.history.application.port.in.HistoryUsecase;
 import forjun.web.module.history.domain.History;
-import forjun.web.module.history.domain.port.HistoryPort;
+import forjun.web.module.history.application.port.out.HistoryJpaPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class HistoryService {
+public class HistoryService implements HistoryQuery , HistoryUsecase {
 
-    private final HistoryPort historyPort;
+    private final HistoryJpaPort historyJpaPort;
 
-    //이력 저장 
+    @Override
     public void createHistory(History history) {
-
-        try {
-            historyPort.saveHistory(history);
-        } catch (DataAccessException e) {
-            throw new JpaException("DB 처리 중 오류가 발생했습니다.", "History", "CreateHistory", e.getCause());
-        }
+        historyJpaPort.saveHistory(history);
     }
 
-    //이력 수정
+    @Override
     public void updateHistory(History history) {
 
 
-        try {
-            historyPort.getHistory(history.getHistoryId()).orElseThrow(
-                    HistoryNotFoundException::new);
-            historyPort.saveHistory(history);
-
-        } catch (DataAccessException e) {
-            throw new JpaException("DB 처리 중 오류가 발생했습니다.", "History", "updateHistory", e.getCause());
-        }
-
+        historyJpaPort.saveHistory(history);
     }
 
-    //이력 가지고 오기
-    public History getHistory(int historyId) {
-
-        try {
-            return historyPort.getHistory(historyId).orElseThrow(
-                    HistoryNotFoundException::new
-            );
-
-        } catch (DataAccessException e) {
-            throw new JpaException("DB 처리 중 오류가 발생했습니다.", "History", "updateHistory", e.getCause());
-        }
+    @Override
+    public void deleteHistory(Integer historyId) {
+        historyJpaPort.deleteHistory(historyId);
     }
 
-    //이력 삭제하기
-    public void deleteHistory(int historyId) {
+    @Override
+    public List<History> getHistorys(String category,String userId) {
+        return historyJpaPort.getHistorys(category , userId);
+    }
 
-        try {
-            historyPort.getHistory(historyId).orElseThrow(HistoryNotFoundException::new);
-            historyPort.deleteHistory(historyId);
-
-        } catch (DataAccessException e) {
-            throw new JpaException("DB 처리 중 오류가 발생했습니다.", "History", "deleteHistory", e.getCause());
-        }
+    @Override
+    public History getHistory(Integer historyId) {
+        return historyJpaPort.getHistory(historyId);
     }
 }

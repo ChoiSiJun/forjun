@@ -1,12 +1,12 @@
 package forjun.web.exception.application.authentication;
 
-public class NotMatchPasswordException extends RuntimeException{
+import forjun.web.exception.AppException;
+import forjun.web.exception.ErrorCode;
 
-    public NotMatchPasswordException(){
-        super("비밀번호가 일치하지 않습니다.");
+public class NotMatchPasswordException extends AppException {
+
+    public NotMatchPasswordException(String userId){
+        super(ErrorCode.USER_NOT_MATCH_PASSWORD,userId);
     }
 
-    public NotMatchPasswordException(String id, Throwable cause) {
-        super("비밀번호가 일치하지 않습니다. -> " + id, cause);
-    }
 }

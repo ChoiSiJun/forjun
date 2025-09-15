@@ -1,12 +1,9 @@
 package forjun.web.module.user.domain;
 
 
-import forjun.web.module.user.infrastructure.repository.jpa.UserEntity;
-import forjun.web.util.EncryptionUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Getter
@@ -14,33 +11,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Builder
 public class User {
 
+    private Long id;
     private String userId;
     private String password;
     private String userName;
     private String email;
     private String authority;
-
-    @SneakyThrows
-    public UserEntity toEntity(){
-        return UserEntity.builder()
-                .userId(this.userId)
-                .userName(this.userName)
-                .password(this.password)
-                .email(EncryptionUtil.encrypt(this.email))
-                .authority(this.authority)
-                .build();
-    }
-
-    @SneakyThrows
-    public static User fromEntity(UserEntity userEntity) {
-        return User.builder()
-                .userId(userEntity.getUserId())
-                .userName(userEntity.getUserName())
-                .password(userEntity.getPassword())
-                .email(EncryptionUtil.decrypt(userEntity.getEmail()))
-                .authority(userEntity.getAuthority())
-                .build();
-    }
+    private String historyPrivate;
+    private String personalPrivate;
 
     //패스워드 암호화
     public void decryptPassword(){

@@ -38,3 +38,4 @@ logging:
               sql: TRACE
         org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
+

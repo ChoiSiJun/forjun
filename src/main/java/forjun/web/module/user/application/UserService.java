@@ -1,88 +1,93 @@
 package forjun.web.module.user.application;
 
-
+import forjun.web.exception.application.user.UserDuplicate;
 import forjun.web.exception.application.authentication.NotMatchPasswordException;
-import forjun.web.exception.application.user.UserDuplicateException;
-import forjun.web.exception.application.user.UserNotFoundException;
+import forjun.web.exception.application.user.UserNotFount;
+import forjun.web.module.user.application.port.in.UserQuery;
+import forjun.web.module.user.application.port.in.UserUsecase;
+import forjun.web.module.user.application.port.out.UserJpaPort;
 import forjun.web.module.user.domain.User;
-import forjun.web.module.user.infrastructure.adapter.UserJpaAdapter;
+import forjun.web.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserQuery, UserUsecase {
 
-    private final UserJpaAdapter userJpaAdapter;
+    private final UserJpaPort userJpaPort;
+    private final JwtUtil jwtUtil;
 
     //유저 저장
-    public User saveUser(User user){
+    @Override
+    public void saveUser(User user){
 
-            //패스워드 암호화.
-            user.decryptPassword();
+        //패스워드 암호화.
+        user.decryptPassword();
 
-            //기존 가입정보 있는지 확인.
-            if(userJpaAdapter.duplicateUserCheck(user.getUserId())){
-                throw new UserDuplicateException();
-            }
-            
-            //유저 저장
-            userJpaAdapter.saveUser(user);
+        //기존 가입정보 있는지 확인.
+        if(userJpaPort.existsByUserId(user.getUserId())){
+            throw new UserDuplicate(user.getUserId());
+        }
 
-        return user;
+        //유저 저장
+        userJpaPort.saveUser(user);
     }
 
-    //유저 정보
-    public User viewUser(String userid){
-
-        User user = userJpaAdapter.getUser(userid);
-        if(user==null){
-            throw new UserNotFoundException();
-        }
-
-        return user;
+    @Override
+    public void deleteUser(Long id) {
+        userJpaPort.deleteUser(id);
     }
 
-    //유저 리스트 ( 이름 )
-    @SneakyThrows
-    public List<User> SearchUserList(String keyword){
+    @Override
+    public void updateUser(User user) {
 
-        List<User> userList = userJpaAdapter.searchUserList(keyword);
-        if(userList.isEmpty()){
-            throw new UserNotFoundException();
+        //기존 가입정보 있는지 확인.
+        if(!userJpaPort.existsById(user.getId())){
+            throw new UserNotFount(user.getUserId());
         }
 
-        return userList;
-    }
-    
-    //유저 아이디 중복체크
-    public Boolean DuplicateUser(String userid){
-
-        if(userJpaAdapter.duplicateUserCheck(userid)){
-            throw new UserDuplicateException();
-        }
-
-        return false;
+        //유저 저장
+        userJpaPort.saveUser(user);
     }
 
-    //유저 아이디 패스워드 인증
-    public User Authentication(User user){
+    @Override
+    public User getUser(Long id) {
+        User user = userJpaPort.getUser(id);
+        if(user == null){
+            throw new UserNotFount(String.valueOf(id));
+        }
+        return userJpaPort.getUser(id);
+    }
 
-        User userResult = userJpaAdapter.getUser(user.getUserId());
-        if(userResult==null){
-            throw new UserNotFoundException();
+    @Override
+    public User getUserByUserId(String userId) {
+        return userJpaPort.getUserByUserId(userId);
+    }
+
+    @Override
+    public String authentication(User user) {
+
+        String input_id = user.getUserId();
+        String input_password = user.getPassword();
+        user = userJpaPort.getUserByUserId(user.getUserId());
+        if (user == null) {
+            throw  new UserNotFount(input_id);
         }
 
-        if(!new BCryptPasswordEncoder().matches(user.getPassword() , userResult.getPassword())){
-            throw new NotMatchPasswordException();
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if(!passwordEncoder.matches(input_password, user.getPassword())){
+            throw new NotMatchPasswordException(user.getUserId());
         }
+        return jwtUtil.generateToken(user.getUserId() , user.getUserName() , user.getAuthority());
+    }
 
-        return userResult;
+    @Override
+    public boolean existsByUserId(String userid) {
+        return userJpaPort.existsByUserId(userid);
     }
 }
