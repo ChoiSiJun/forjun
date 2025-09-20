@@ -1,5 +1,7 @@
 package forjun.web.module.history.application;
 
+import forjun.web.exception.AppException;
+import forjun.web.exception.ErrorCode;
 import forjun.web.module.history.application.port.in.HistoryQuery;
 import forjun.web.module.history.application.port.in.HistoryUsecase;
 import forjun.web.module.history.domain.History;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,13 +28,15 @@ public class HistoryService implements HistoryQuery , HistoryUsecase {
 
     @Override
     public void updateHistory(History history) {
-
-
-        historyJpaPort.saveHistory(history);
+        historyJpaPort.updateHistory(history);
     }
 
     @Override
     public void deleteHistory(Integer historyId) {
+
+        if(historyJpaPort.existsHistory(historyId)) {
+            throw AppException.of(ErrorCode.HISTORY_NOT_FOUND,historyId);
+        }
         historyJpaPort.deleteHistory(historyId);
     }
 
@@ -42,6 +47,12 @@ public class HistoryService implements HistoryQuery , HistoryUsecase {
 
     @Override
     public History getHistory(Integer historyId) {
-        return historyJpaPort.getHistory(historyId);
+
+        Optional<History> historyOptional= historyJpaPort.getHistory(historyId);
+        if(historyOptional.isEmpty()){
+            throw AppException.of(ErrorCode.HISTORY_NOT_FOUND,historyId);
+        }
+
+        return historyOptional.get();
     }
 }

@@ -3,7 +3,7 @@ package forjun.web.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-public abstract class AppException extends RuntimeException {
+public class AppException extends RuntimeException {
 
     private final ErrorCode errorCode;
     @Getter
@@ -29,6 +29,10 @@ public abstract class AppException extends RuntimeException {
 
     public HttpStatus getHttpStatus() {
         return errorCode.getStatus();
+    }
+
+    public static AppException of(ErrorCode errorCode, Object... logArgs) {
+        return new AppException(errorCode , logArgs);
     }
 
 }

@@ -10,6 +10,10 @@ import forjun.web.module.personal.infrastructure.jpa.entity.PersonalEntity;
 import forjun.web.module.personal.infrastructure.jpa.entity.PersonalSkillEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class PersonalEntityMapper {
 
@@ -66,6 +70,67 @@ public class PersonalEntityMapper {
                 .companyName(company.getCompany_name())
                 .startDate(company.getStartDate())
                 .endDate(company.getEndDate())
+                .build();
+    }
+
+
+    // PersonalEntity (JPA) -> Personal (도메인)
+    public Personal toDomain(PersonalEntity personalEntity) {
+        if (personalEntity == null) return null;
+
+        List<PersonalAward> personalAwards = new ArrayList<>();
+        if (personalEntity.getAwards() != null) {
+            personalAwards = personalEntity.getAwards().stream()
+                    .map(this::toDomain)
+                    .collect(Collectors.toList());
+        }
+
+        List<PersonalSkill> personalSkills = new ArrayList<>();
+        if (personalEntity.getSkills() != null) {
+            personalSkills = personalEntity.getSkills().stream()
+                    .map(this::toDomain)
+                    .collect(Collectors.toList());
+        }
+
+        List<PersonalCompany> personalCompanys = new ArrayList<>();
+        if (personalEntity.getCompanies() != null) {
+            personalCompanys = personalEntity.getCompanies().stream()
+                    .map(this::toDomain)
+                    .collect(Collectors.toList());
+        }
+
+        return Personal.builder()
+                .id(personalEntity.getId())
+                .userId(personalEntity.getUserId())
+                .name(personalEntity.getName())
+                .job(personalEntity.getJob())
+                .profile_image_url(personalEntity.getProfileImageUrl())
+                .personalAwards(personalAwards)
+                .personalSkills(personalSkills)
+                .personalCompanys(personalCompanys)
+                .build();
+    }
+
+    // PersonalAwardEntity (JPA) -> PersonalAward (도메인)
+    public PersonalAward toDomain(PersonalAwardEntity awardEntity) {
+        return PersonalAward.builder()
+                .award_name(awardEntity.getAwardName())
+                .build();
+    }
+
+    // PersonalSkillEntity (JPA) -> PersonalSkill (도메인)
+    public PersonalSkill toDomain(PersonalSkillEntity skillEntity) {
+        return PersonalSkill.builder()
+                .skillName(skillEntity.getSkillName())
+                .build();
+    }
+
+    // PersonalCompanyEntity (JPA) -> PersonalCompany (도메인)
+    public PersonalCompany toDomain(PersonalCompanyEntity companyEntity) {
+        return PersonalCompany.builder()
+                .company_name(companyEntity.getCompanyName())
+                .startDate(companyEntity.getStartDate())
+                .endDate(companyEntity.getEndDate())
                 .build();
     }
 }

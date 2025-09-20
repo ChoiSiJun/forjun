@@ -1,5 +1,6 @@
 package forjun.web.module.history.infrastructure.jpa.entity;
 
+import forjun.web.module.history.domain.History;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 @Getter
@@ -41,8 +43,24 @@ public class HistoryEntity {
     private LocalDate  historyEndDate;
 
     public void addHistorySkill(HistorySkillEntity skill) {
-
         historySkill.add(skill);
         skill.setHistory(this);
+    }
+
+    public void updateHistory(String category, String project, String subject, String description, LocalDate historyStartDate, LocalDate historyEndDate, List<HistorySkillEntity> skillEntities) {
+        this.category = category;
+        this.project = project;
+        this.subject = subject;
+        this.description = description;
+        this.historyStartDate = historyStartDate;
+        this.historyEndDate = historyEndDate;
+
+        // 기존의 historySkill 리스트를 모두 비워서 고아(orphan)로 만들어 삭제되도록 함
+        this.historySkill.clear();
+
+        //historySkill 재추가
+        if (skillEntities != null) {
+            skillEntities.forEach(this::addHistorySkill); // 새 스킬 추가
+        }
     }
 }

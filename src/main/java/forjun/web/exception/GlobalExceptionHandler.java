@@ -1,9 +1,12 @@
 package forjun.web.exception;
 
+import jakarta.persistence.PersistenceException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -43,11 +46,11 @@ public class GlobalExceptionHandler {
     }
 
     // DB 예외 처리
-    @ExceptionHandler(DbException.class)
-    public ResponseEntity<ErrorResponse> handleDbException(DbException ex) {
-        log.warn("[DB Exception] " + ex.getLogMessage(), ex.getLogArgs());
-        return ResponseEntity.status(ex.getHttpStatus())
-                .body(new ErrorResponse(ex.getErrorCode(), ex.getDisplayMessage()));
+    @ExceptionHandler({ PersistenceException.class, DataAccessException.class })
+    public ResponseEntity<ErrorResponse> handleDbException(Exception ex) {
+        log.error("[DB Exception]", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse("DB_ERROR", "서버 오류가 발생했습니다."));
     }
 
     // 기타 예외 처리

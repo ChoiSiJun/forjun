@@ -1,8 +1,7 @@
 package forjun.web.module.user.application;
 
-import forjun.web.exception.application.user.UserDuplicate;
-import forjun.web.exception.application.authentication.NotMatchPasswordException;
-import forjun.web.exception.application.user.UserNotFount;
+import forjun.web.exception.AppException;
+import forjun.web.exception.ErrorCode;
 import forjun.web.module.user.application.port.in.UserQuery;
 import forjun.web.module.user.application.port.in.UserUsecase;
 import forjun.web.module.user.application.port.out.UserJpaPort;
@@ -13,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.security.sasl.AuthenticationException;
 
 @Service
 @Transactional
@@ -31,7 +32,7 @@ public class UserService implements UserQuery, UserUsecase {
 
         //기존 가입정보 있는지 확인.
         if(userJpaPort.existsByUserId(user.getUserId())){
-            throw new UserDuplicate(user.getUserId());
+            throw AppException.of(ErrorCode.USER_DUPLICATE, user.getUserId());
         }
 
         //유저 저장
@@ -48,7 +49,7 @@ public class UserService implements UserQuery, UserUsecase {
 
         //기존 가입정보 있는지 확인.
         if(!userJpaPort.existsById(user.getId())){
-            throw new UserNotFount(user.getUserId());
+            throw AppException.of(ErrorCode.USER_NOT_FOUND, user.getId());
         }
 
         //유저 저장
@@ -59,7 +60,7 @@ public class UserService implements UserQuery, UserUsecase {
     public User getUser(Long id) {
         User user = userJpaPort.getUser(id);
         if(user == null){
-            throw new UserNotFount(String.valueOf(id));
+            throw AppException.of(ErrorCode.USER_NOT_FOUND, id);
         }
         return userJpaPort.getUser(id);
     }
@@ -76,12 +77,12 @@ public class UserService implements UserQuery, UserUsecase {
         String input_password = user.getPassword();
         user = userJpaPort.getUserByUserId(user.getUserId());
         if (user == null) {
-            throw  new UserNotFount(input_id);
+            throw AppException.of(ErrorCode.ID_NOT_FOUND, input_id);
         }
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if(!passwordEncoder.matches(input_password, user.getPassword())){
-            throw new NotMatchPasswordException(user.getUserId());
+            throw AppException.of(ErrorCode.PASSWORD_NOT_MATCH, input_id);
         }
         return jwtUtil.generateToken(user.getUserId() , user.getUserName() , user.getAuthority());
     }

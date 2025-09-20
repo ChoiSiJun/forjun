@@ -9,12 +9,10 @@ import java.util.List;
 
 
 @Repository
-public interface HistoryRepo extends JpaRepository<HistoryEntity, Integer> {
+public interface HistoryRepository extends JpaRepository<HistoryEntity, Integer> {
     
     //카테고리 , 이용자 정보로 히스토리 이력 가져오기
     List<HistoryEntity> findByCategoryAndUserIdOrderByHistoryStartDateDesc(String category, String userId);
-
-    History findHistoryEntityById(Integer id);
 }
 
 

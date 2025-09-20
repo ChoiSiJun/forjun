@@ -20,6 +20,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping
 public class HistoryApi {
 
     private final HistoryQuery historyQuery;
@@ -27,14 +28,14 @@ public class HistoryApi {
     private final HistoryApiMapper historyApiMapper;
 
     /** 히스토리 등록*/
-    @PostMapping("/history")
+    @PostMapping
     public ResponseEntity<Void> registerHistory(Authentication auth , @RequestBody HistoryCreateRequest request) {
         CustomUserDetail user = (CustomUserDetail) auth.getPrincipal();
         historyUsecase.createHistory(historyApiMapper.toDomain(user.getUserId(),request));
         return ResponseEntity.ok().build();
     }
     /** 히스토리 업데이트 */
-    @PutMapping("/history")
+    @PutMapping
     public ResponseEntity<Void> updateHistory(Authentication auth , @RequestBody HistoryUpdateRequest request){
 
         CustomUserDetail user = (CustomUserDetail) auth.getPrincipal();
@@ -43,15 +44,14 @@ public class HistoryApi {
     }
 
     /** 히스토리 가져오기 */
-    @GetMapping("/history/{historyId}")
+    @GetMapping("/{historyId}")
     public ResponseEntity<HistoryResponse> getHistory(@PathVariable int historyId)
     {
-
         return ResponseEntity.ok(historyApiMapper.toHistoryResponse(historyQuery.getHistory(historyId)));
     }
 
     /** 히스토리 리스트 가져오기*/
-    @GetMapping("/histories")
+    @GetMapping
     public ResponseEntity<List<HistoryResponse>> histories(Authentication auth, @RequestParam String category)
     {
         CustomUserDetail user = (CustomUserDetail) auth.getPrincipal();
@@ -59,14 +59,14 @@ public class HistoryApi {
     }
 
     /** 웹 히스토리 정보가져오기*/
-    @GetMapping("/web/histories")
+    @GetMapping("/histories/web")
     public ResponseEntity<List<HistoryResponse>> webHistories(@RequestParam String category, @RequestParam String userId)
     {
         return ResponseEntity.ok(historyApiMapper.toHistoryReponseList(historyQuery.getHistorys(category,userId)));
     }
 
     /** 히스토리 삭제 */
-    @DeleteMapping("/history/{historyId}")
+    @DeleteMapping("/{historyId}")
     public ResponseEntity<Integer> deleteHistory(@PathVariable int historyId) {
         historyUsecase.deleteHistory(historyId);
         return ResponseEntity.ok().build();

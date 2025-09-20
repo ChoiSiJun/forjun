@@ -8,6 +8,8 @@ import forjun.web.module.personal.infrastructure.jpa.repository.PersonalReposito
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class PersonalJpaAdapater implements PersonalJpaPort {
@@ -19,5 +21,12 @@ public class PersonalJpaAdapater implements PersonalJpaPort {
     public void savePersonal(Personal personal) {
         PersonalEntity personalEntity = personalEntityMapper.toEntity(personal);
         personalRepository.save(personalEntity);
+    }
+
+    @Override
+    public Optional<Personal> getPersonal(Long id) {
+        return personalRepository.findById(id).map(
+                personalEntityMapper::toDomain
+        );
     }
 }

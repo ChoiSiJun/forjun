@@ -26,14 +26,24 @@ public class HistoryEntityMapper {
                 .build();
 
         if (history.getHistorySkill() != null) {
-            for (String skillName : history.getHistorySkill()) {
-                HistorySkillEntity skillEntity = HistorySkillEntity.builder()
-                        .skill(skillName)
-                        .build();
-                entity.addHistorySkill(skillEntity);  // 연관관계 세팅
-            }
+            toSkillEntities(history.getHistorySkill())
+                    .forEach(entity::addHistorySkill);
         }
         return entity;
+    }
+
+    public List<HistorySkillEntity> toSkillEntities(List<String> historySkill) {
+        return historySkill.stream()
+                .map( skill -> HistorySkillEntity.builder()
+                        .skill(skill)
+                        .build()
+                ).toList();
+    }
+
+    public void updateHistoryEntity(History history, HistoryEntity historyEntity) {
+        if (historyEntity == null) return;
+        List<HistorySkillEntity> historySkillEntities = toSkillEntities(history.getHistorySkill());
+        historyEntity.updateHistory(history.getCategory(),history.getProject(),history.getSubject(),history.getDescription(),history.getHistoryStartDate(),history.getHistoryEndDate(),historySkillEntities);
     }
 
     public History toDomain(HistoryEntity entity) {
