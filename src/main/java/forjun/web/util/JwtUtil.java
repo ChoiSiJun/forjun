@@ -1,7 +1,8 @@
 package forjun.web.util;
 
 
-import forjun.web.exception.application.authentication.NotJwtGenerate;
+import forjun.web.exception.AppException;
+import forjun.web.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,7 +29,7 @@ public class JwtUtil {
                     .compact();
 
         } catch (Exception e){
-            throw new NotJwtGenerate(e);
+            throw new AppException(ErrorCode.JWT_NOT_GENERATE);
         }
     }
 

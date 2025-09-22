@@ -1,7 +1,6 @@
 package forjun.web.config.security;
 
 
-import forjun.web.exception.application.authentication.NotJwtGenerate;
 import forjun.web.module.user.application.UserService;
 import forjun.web.module.user.domain.User;
 import forjun.web.util.JwtUtil;
@@ -46,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException , NotJwtGenerate {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException  {
 
         final String authorizationHeader = request.getHeader("Authorization");
 
