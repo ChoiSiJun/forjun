@@ -1,0 +1,15 @@
+package forjun.web.module.system.application.port.out;
+
+
+import forjun.web.module.system.domain.UploadFile;
+
+//File Database 영속성 포트
+public interface FilePersistencePort {
+
+    //파일 DB 저장
+    public void save(UploadFile uploadFile);
+    
+    //파일 DB 삭제
+    public void delete(String fileId);
+
+}

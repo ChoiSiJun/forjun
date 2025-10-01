@@ -1,0 +1,56 @@
+package forjun.web.module.system.application;
+
+import forjun.web.exception.AppException;
+import forjun.web.exception.ErrorCode;
+import forjun.web.module.system.application.port.in.UploadUsecase;
+import forjun.web.module.system.application.port.out.FilePersistencePort;
+import forjun.web.module.system.application.port.out.FileStoragePort;
+import forjun.web.module.system.domain.UploadFile;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Objects;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class FileUploadService implements UploadUsecase {
+
+    private final FileStoragePort fileStoragePort;
+    private final FilePersistencePort filePersistencePort;
+
+    @Override
+    public UploadFile uploadFile(MultipartFile multipartFile) {
+
+        if (multipartFile == null || multipartFile.isEmpty() || Objects.requireNonNull(multipartFile.getOriginalFilename()).isEmpty()) {
+            throw new AppException(ErrorCode.FILE_NOT_FOUND);
+        }
+
+        UploadFile uploadFile = null;
+
+        try {
+            // 1. 파일 시스템에 저장 (IO 작업)
+            uploadFile = fileStoragePort.save(multipartFile);
+
+            // 2. 파일 메타데이터 DB 저장 (DB 트랜잭션 범위)
+            filePersistencePort.save(uploadFile);
+
+            return uploadFile;
+
+        }catch (Exception dbException) {
+
+            // DB 저장이 실패하면, 물리적으로 저장된 파일도 삭제 (보상 트랜젝션)
+            if (uploadFile != null) {
+                try {
+                    fileStoragePort.delete(uploadFile.getStoredPath());
+                } catch (Exception deleteException) {
+                    throw new AppException(ErrorCode.FILE_UPLOAD_FAIL, "DB 저장 실패 및 파일 시스템 롤백(삭제) 오류: " + deleteException.getMessage());
+                }
+            }
+            throw new AppException(ErrorCode.FILE_UPLOAD_FAIL, "파일 메타데이터 DB 저장 오류: " + dbException.getMessage());
+        }
+    }
+}

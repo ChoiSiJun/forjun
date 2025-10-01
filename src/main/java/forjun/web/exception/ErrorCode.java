@@ -67,6 +67,21 @@ public enum ErrorCode {
             HttpStatus.UNAUTHORIZED
     ),
 
+    // Upload
+    FILE_NOT_FOUND(
+            "업로드 할 파일이 없습니다.",
+            "업로드 대상파일 미존재",
+            "FILE_NOT_FOUND",
+            HttpStatus.NOT_FOUND
+    ),
+
+    FILE_UPLOAD_FAIL(
+            "파일 업로드에 실패하였습니다.",
+            "파일 업로드 실패 -> 원인:{}",
+            "FILE_UPLOAD_FAIL",
+            HttpStatus.INTERNAL_SERVER_ERROR
+    ),
+
     // SERVER
     SERVER_ERROR(
             "예상치 못한 서버 오류가 발생하였습니다.",
