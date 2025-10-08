@@ -8,10 +8,9 @@ import forjun.web.module.system.application.port.out.FileStoragePort;
 import forjun.web.module.system.domain.UploadFile;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.Objects;
 
 @Service
@@ -32,6 +31,12 @@ public class FileUploadService implements UploadUsecase {
         UploadFile uploadFile = null;
 
         try {
+            //기존 파일 해쉬데이터 확인
+            uploadFile = filePersistencePort.getFileByHashData(DigestUtils.sha256Hex(multipartFile.getInputStream()));
+            if(uploadFile != null) {
+                return uploadFile;
+            }
+
             // 1. 파일 시스템에 저장 (IO 작업)
             uploadFile = fileStoragePort.save(multipartFile);
 
@@ -51,6 +56,24 @@ public class FileUploadService implements UploadUsecase {
                 }
             }
             throw new AppException(ErrorCode.FILE_UPLOAD_FAIL, "파일 메타데이터 DB 저장 오류: " + dbException.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteFile(String fileId) {
+
+        UploadFile uploadFile = filePersistencePort.getFile(fileId);
+
+        //파일 삭제 시작
+        if (uploadFile != null) {
+            try {
+                fileStoragePort.delete(uploadFile.getStoredPath());
+                filePersistencePort.delete(uploadFile.getFileId());
+            } catch (Exception e) {
+                throw new AppException(ErrorCode.FILE_DELETE_FAIL, e.getMessage());
+            }
+        }else{
+            throw new AppException(ErrorCode.FILE_NOT_FOUND);
         }
     }
 }

@@ -28,14 +28,17 @@ public class PersonalEntity {
     private String profileImageUrl;
 
     // 경력
+    @Builder.Default
     @OneToMany(mappedBy = "personal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PersonalCompanyEntity> companies = new ArrayList<>();
 
     // 스킬
+    @Builder.Default
     @OneToMany(mappedBy = "personal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PersonalSkillEntity> skills = new ArrayList<>();
 
     // 수상
+    @Builder.Default
     @OneToMany(mappedBy = "personal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PersonalAwardEntity> awards = new ArrayList<>();
 

@@ -7,4 +7,6 @@ public interface UploadUsecase {
     
     //파일 업로드 서비스
     public UploadFile uploadFile(MultipartFile multipartFile);
+
+    public void deleteFile(String fileId);
 }

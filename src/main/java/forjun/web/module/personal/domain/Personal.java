@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -19,8 +20,13 @@ public class Personal {
     private String name;
     private String profile_image_url;
 
-    List<PersonalAward> personalAwards;
-    List<PersonalCompany> personalCompanys;
-    List<PersonalSkill> personalSkills;
+    @Builder.Default
+    List<PersonalAward> personalAwards = new ArrayList<>();
+
+    @Builder.Default
+    List<PersonalCompany> personalCompanys = new ArrayList<>();
+
+    @Builder.Default
+    List<PersonalSkill> personalSkills = new ArrayList<>();
 
 }

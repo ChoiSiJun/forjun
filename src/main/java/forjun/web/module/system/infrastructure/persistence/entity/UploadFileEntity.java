@@ -44,4 +44,7 @@ public class UploadFileEntity {
     // 파일이 업로드된 시간
     @Column(name = "UPLOAD_AT", nullable = false)
     private LocalDateTime uploadAt = LocalDateTime.now(); // 💡 기본값은 필드에서 설정
+
+    @Column(name = "HASH_DATA", nullable = false)
+    private String hashData;
 }

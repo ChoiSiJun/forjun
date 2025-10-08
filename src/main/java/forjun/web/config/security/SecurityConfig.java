@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .authorizeHttpRequests(auth -> {
-
+                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     publicUrlConfig.publicUrls().forEach((method , urls) -> {
                         auth.requestMatchers(HttpMethod.valueOf(method) , urls.toArray(new String[0]))
                                 .permitAll();

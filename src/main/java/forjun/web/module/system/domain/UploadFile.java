@@ -18,6 +18,7 @@ public class UploadFile {
     private final long size;            // 파일 크기 (바이트)
     private final String contentType;    // 파일 타입 (e.g., application/pdf, image/jpeg)
     private final LocalDateTime uploadAt; //파일 업로드 날짜
+    private String hashData;
 
     // 파일 확장자 가져오기.
     public String getExtension() {
