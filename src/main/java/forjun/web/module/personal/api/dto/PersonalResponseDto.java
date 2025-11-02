@@ -22,7 +22,6 @@ public class PersonalResponseDto {
     //프로필 사진
     private String profile_image_url;
 
-
     private List<PersonalAwardResponse> awards;
     private List<PersonalCompanyResponse> companies;
     private List<PersonalSkillResponse> skills;

@@ -6,6 +6,7 @@ import forjun.web.module.personal.domain.Personal;
 import forjun.web.module.personal.domain.value.PersonalAward;
 import forjun.web.module.personal.domain.value.PersonalCompany;
 import forjun.web.module.personal.domain.value.PersonalSkill;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,9 +16,11 @@ import java.util.List;
 @Component
 public class PersonalApiMapper {
 
+    @Value("${file.upload.resource-url}")
+    private String resourceUrl;
+
     public Personal toDomain(String userId, SavePersonalRequestDto request) {
         Personal personal = Personal.builder()
-                .id(request.getId())
                 .userId(userId)
                 .name(request.getName())
                 .job(request.getJob())
@@ -59,10 +62,13 @@ public class PersonalApiMapper {
 
     public PersonalResponseDto toPersonalResponseDto(Personal personal) {
 
+        if(personal == null){
+            return null;
+        }
+
         List<PersonalResponseDto.PersonalAwardResponse> awardList = new ArrayList<>();
         List<PersonalResponseDto.PersonalCompanyResponse> companyList = new ArrayList<>();
         List<PersonalResponseDto.PersonalSkillResponse> skillList = new ArrayList<>();
-
 
         personal.getPersonalAwards().forEach(award -> {
             awardList.add(PersonalResponseDto.PersonalAwardResponse.builder()
@@ -87,7 +93,7 @@ public class PersonalApiMapper {
                 .id(personal.getId())
                 .name(personal.getName())
                 .job(personal.getJob())
-                .profile_image_url(personal.getProfile_image_url())
+                .profile_image_url(resourceUrl + personal.getProfile_image_url())
                 .awards(awardList)
                 .companies(companyList)
                 .skills(skillList)

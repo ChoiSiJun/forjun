@@ -23,14 +23,14 @@ public class PersonalController {
     public ResponseEntity<Void> savePersonal(Authentication auth, @RequestBody SavePersonalRequestDto requestDto) {
         CustomUserDetail user = (CustomUserDetail) auth.getPrincipal();
         personalService.savePersonal(personalApiMapper.toDomain(user.getUserId() , requestDto));
-        
         return ResponseEntity.ok().build();
     }
 
     //자기소개서 가져오기
-    @GetMapping("/{id}")
-    public ResponseEntity<PersonalResponseDto> getPersonal(Long id) {
-        PersonalResponseDto personalResponseDto = personalApiMapper.toPersonalResponseDto(personalService.getPersonal(id));
+    @GetMapping
+    public ResponseEntity<PersonalResponseDto> getPersonal(Authentication auth) {
+        CustomUserDetail user = (CustomUserDetail) auth.getPrincipal();
+        PersonalResponseDto personalResponseDto = personalApiMapper.toPersonalResponseDto(personalService.getPersonal(user.getUserId()));
         return ResponseEntity.ok(personalResponseDto);
     }
 }

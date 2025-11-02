@@ -21,27 +21,22 @@ import java.util.UUID;
 @Slf4j
 public class LocalFileStorageAdapter implements FileStoragePort {
 
-    private final String localUploadDir;
-    private final String baseUrl;
+    private final String resourcePath;
 
     /**
-     * @param localUploadDir application.yml에서 주입받은 로컬 업로드 디렉토리 경로
-     * @param baseUrl application.yml에서 주입받은 파일 접근 베이스 URL
+     * @param resourcePath application.yml에서 주입받은 로컬 업로드 디렉토리 경로
      */
-    public LocalFileStorageAdapter(
-            @Value("${file.upload.local-dir}") String localUploadDir,
-            @Value("${file.upload.base-url}") String baseUrl) {
+    public LocalFileStorageAdapter(@Value("${file.upload.resource-path}") String resourcePath) {
 
-        this.localUploadDir = localUploadDir;
-        this.baseUrl = baseUrl;
+        this.resourcePath = resourcePath;
 
         // 💡 1. 디렉토리 검사 및 생성 로직 추가
-        if (StringUtils.hasText(localUploadDir)) {
-            Path uploadPath = Paths.get(localUploadDir);
+        if (StringUtils.hasText(resourcePath)) {
+            Path uploadPath = Paths.get(resourcePath);
             if (!Files.exists(uploadPath)) {
                 try {
                     Files.createDirectories(uploadPath); // 디렉토리 구조가 여러 단계여도 안전하게 생성
-                    log.info("로컬 업로드 디렉토리 생성 완료: {}", localUploadDir);
+                    log.info("로컬 업로드 디렉토리 생성 완료: {}", resourcePath);
                 } catch (IOException e) {
                     log.error("로컬 업로드 디렉토리 생성 실패", e);
                     // 초기화 실패는 애플리케이션 시작을 막아야 함
@@ -62,19 +57,17 @@ public class LocalFileStorageAdapter implements FileStoragePort {
         String fileExtension = getFileExtension(originalFilename);
         String storedFileName = fileId + "." + fileExtension;
 
-        Path targetLocation = Paths.get(localUploadDir).resolve(storedFileName);
+        Path targetLocation = Paths.get(resourcePath).resolve(storedFileName);
         LocalDateTime uploadDate = LocalDateTime.now();
 
         try {
             Files.copy(file.getInputStream(), targetLocation);
 
-            String fileUrl = baseUrl + storedFileName;
-
             return UploadFile.builder()
                     .fileId(fileId)
                     .originalName(originalFilename)
                     .storedPath(targetLocation.toString())
-                    .url(fileUrl)
+                    .url(storedFileName)
                     .size(file.getSize())
                     .contentType(file.getContentType())
                     .uploadAt(uploadDate)

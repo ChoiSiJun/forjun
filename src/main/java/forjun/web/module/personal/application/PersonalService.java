@@ -29,16 +29,7 @@ public class PersonalService implements PersonalUseCase , PersonalQuery {
     }
 
     @Override
-    public Personal getPersonal(Long personalId) {
-
-        if(personalId == null) {
-            return null;
-        }
-
-        Optional<Personal> personalOptional = personalJpaAdapater.getPersonal(personalId);
-        if(personalOptional.isEmpty()){
-            throw AppException.of(ErrorCode.PERSONAL_NOT_FOUND, personalId);
-        }
-        return personalOptional.get();
+    public Personal getPersonal(String userId) {
+        return personalJpaAdapater.getPersonal(userId).orElse(null);
     }
 }

@@ -19,7 +19,6 @@ public class PersonalEntityMapper {
 
     public PersonalEntity toEntity(Personal personal) {
         PersonalEntity personalEntity = PersonalEntity.builder()
-                .id(personal.getId())
                 .userId(personal.getUserId())
                 .name(personal.getName())
                 .job(personal.getJob())

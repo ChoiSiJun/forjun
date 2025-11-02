@@ -1,5 +1,6 @@
 package forjun.web.module.personal.infrastructure.jpa.entity;
 
+import forjun.web.module.personal.domain.Personal;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,6 +43,27 @@ public class PersonalEntity {
     @OneToMany(mappedBy = "personal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PersonalAwardEntity> awards = new ArrayList<>();
 
+    // ==========================
+    // 기능 메서드
+    // ==========================
+    public PersonalEntity update(Personal personal ,
+                                 List<PersonalAwardEntity> newAwards,
+                                 List<PersonalSkillEntity> newSkills,
+                                 List<PersonalCompanyEntity> newCompanies)
+    {
+        this.name = personal.getName();
+        this.job = personal.getJob();
+
+        this.companies.clear();
+        newCompanies.forEach(this::addCompany);
+
+        this.skills.clear();
+        newSkills.forEach(this::addSkill);
+
+        this.awards.clear();
+        newAwards.forEach(this::addAward);
+        return this;
+    }
 
     // ==========================
     // 연관관계 편의 메서드들

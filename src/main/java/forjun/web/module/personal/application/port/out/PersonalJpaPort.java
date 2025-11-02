@@ -8,5 +8,5 @@ public interface PersonalJpaPort {
 
     public void savePersonal(Personal personal);
 
-    public Optional<Personal> getPersonal(Long id);
+    public Optional<Personal> getPersonal(String userId);
 }
