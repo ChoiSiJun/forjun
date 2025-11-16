@@ -1,6 +1,5 @@
 package forjun.web.module.history.infrastructure.jpa.repository;
 
-import forjun.web.module.history.domain.History;
 import forjun.web.module.history.infrastructure.jpa.entity.HistoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

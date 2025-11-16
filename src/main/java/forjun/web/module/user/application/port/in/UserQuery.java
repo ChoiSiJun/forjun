@@ -1,8 +1,6 @@
 package forjun.web.module.user.application.port.in;
 import forjun.web.module.user.domain.User;
 
-import java.util.Map;
-
 public interface UserQuery {
     User getUser(Long id);
 

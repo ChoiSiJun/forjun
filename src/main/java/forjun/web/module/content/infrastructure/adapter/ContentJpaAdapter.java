@@ -2,14 +2,12 @@ package forjun.web.module.content.infrastructure.adapter;
 
 import forjun.web.module.content.application.port.ContentPort;
 import forjun.web.module.content.domain.Content;
-import forjun.web.module.content.infrastructure.repository.jpa.ContentEntity;
 import forjun.web.module.content.infrastructure.repository.jpa.ContentRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 
 @Repository

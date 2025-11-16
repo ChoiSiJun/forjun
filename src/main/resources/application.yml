@@ -9,15 +9,14 @@ spring:
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    show-sql: true # 실행되는 SQL 쿼리를 출력
+    show-sql: true
     properties:
       hibernate:
-        format_sql: true # 출력된 SQL을 포맷팅하여 보기 쉽게 함
-        generate_statistics: true
-    database-platform: org.hibernate.dialect.PostgreSQLDialect  # 데이터베이스에 맞는 다이얼렉트 설정
-
+        "[format_sql]": true
+        "[generate_statistics]": true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update # 옵션: none, validate, update, create, create-drop
+      ddl-auto: update
 
 server:
   port: 8085
@@ -27,22 +26,13 @@ jwt:
 
 logging:
   level:
-      org:
-        springframework:
-          web: TRACE
-
-        hibernate:
-          SQL: DEBUG
-          type:
-            descriptor:
-              sql: TRACE
-        org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    "[org.springframework.web]": TRACE
+    "[org.hibernate.SQL]": DEBUG
+    "[org.hibernate.type.descriptor.sql]": TRACE
+    "[org.hibernate.type.descriptor.sql.BasicBinder]": TRACE
 
 file:
   upload:
-    # 💡 파일이 저장될 서버의 로컬 경로 (예: 프로젝트 루트/.upload)
     resource-path: ./uploads
-    # 💡 파일에 접근할 때 사용할 기본 URL (개발 환경에서는 보통 서버 IP:Port/api 경로)
-    resource-url: http://localhost:8085/api/files/download/
-
-
+    resource-domain: http://localhost:8085
+    resource-url: /api/files/download/

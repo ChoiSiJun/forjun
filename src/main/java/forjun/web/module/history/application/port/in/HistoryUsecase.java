@@ -1,7 +1,4 @@
 package forjun.web.module.history.application.port.in;
-
-import forjun.web.exception.application.authentication.NotMatchPasswordException;
-import forjun.web.exception.application.user.UserNotFount;
 import forjun.web.module.history.domain.History;
 
 public interface HistoryUsecase {

@@ -54,6 +54,10 @@ public class PersonalEntity {
         this.name = personal.getName();
         this.job = personal.getJob();
 
+        if(personal.getProfile_image_url() != null){
+         this.profileImageUrl = personal.getProfile_image_url();
+        }
+
         this.companies.clear();
         newCompanies.forEach(this::addCompany);
 

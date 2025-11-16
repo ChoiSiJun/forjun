@@ -3,7 +3,6 @@ package forjun.web.module.personal.domain;
 import forjun.web.module.personal.domain.value.PersonalAward;
 import forjun.web.module.personal.domain.value.PersonalCompany;
 import forjun.web.module.personal.domain.value.PersonalSkill;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 

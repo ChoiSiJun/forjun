@@ -3,7 +3,6 @@ package forjun.web.module.history.infrastructure.jpa;
 import forjun.web.module.history.application.port.out.HistoryJpaPort;
 import forjun.web.module.history.domain.History;
 import forjun.web.module.history.infrastructure.jpa.entity.HistoryEntity;
-import forjun.web.module.history.infrastructure.jpa.entity.HistorySkillEntity;
 import forjun.web.module.history.infrastructure.jpa.mapper.HistoryEntityMapper;
 import forjun.web.module.history.infrastructure.jpa.repository.HistoryRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor

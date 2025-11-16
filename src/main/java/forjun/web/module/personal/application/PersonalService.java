@@ -1,7 +1,5 @@
 package forjun.web.module.personal.application;
 
-import forjun.web.exception.AppException;
-import forjun.web.exception.ErrorCode;
 import forjun.web.module.personal.application.port.in.PersonalQuery;
 import forjun.web.module.personal.application.port.in.PersonalUseCase;
 import forjun.web.module.personal.domain.Personal;
@@ -10,7 +8,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -30,6 +27,7 @@ public class PersonalService implements PersonalUseCase , PersonalQuery {
 
     @Override
     public Personal getPersonal(String userId) {
+
         return personalJpaAdapater.getPersonal(userId).orElse(null);
     }
 }

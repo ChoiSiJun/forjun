@@ -7,7 +7,6 @@ import forjun.web.module.history.application.port.in.HistoryUsecase;
 import forjun.web.module.history.domain.History;
 import forjun.web.module.history.application.port.out.HistoryJpaPort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

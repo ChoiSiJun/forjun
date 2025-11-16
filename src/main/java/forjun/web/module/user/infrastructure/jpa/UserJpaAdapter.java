@@ -2,14 +2,12 @@ package forjun.web.module.user.infrastructure.jpa;
 
 import forjun.web.module.user.application.port.out.UserJpaPort;
 import forjun.web.module.user.domain.User;
-import forjun.web.module.user.infrastructure.jpa.entity.UserEntity;
 import forjun.web.module.user.infrastructure.jpa.mapper.UserJpaMapper;
 import forjun.web.module.user.infrastructure.jpa.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
