@@ -20,7 +20,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping
+@RequestMapping("/history")
 public class HistoryApi {
 
     private final HistoryQuery historyQuery;
@@ -51,15 +51,16 @@ public class HistoryApi {
     }
 
     /** 히스토리 리스트 가져오기*/
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<List<HistoryResponse>> histories(Authentication auth, @RequestParam String category)
     {
         CustomUserDetail user = (CustomUserDetail) auth.getPrincipal();
+        
         return ResponseEntity.ok(historyApiMapper.toHistoryReponseList(historyQuery.getHistorys(category,user.getUserId())));
     }
 
     /** 웹 히스토리 정보가져오기*/
-    @GetMapping("/histories/web")
+    @GetMapping("/web")
     public ResponseEntity<List<HistoryResponse>> webHistories(@RequestParam String category, @RequestParam String userId)
     {
         return ResponseEntity.ok(historyApiMapper.toHistoryReponseList(historyQuery.getHistorys(category,userId)));
