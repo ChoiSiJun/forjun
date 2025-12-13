@@ -12,6 +12,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface HistoryApiMapper {
 
+    @Mapping(target = "id", ignore = true)
+    
     @Mapping(target = "userId" , source = "userId")
     History toDomain(String userId, HistoryCreateRequest request);
 
