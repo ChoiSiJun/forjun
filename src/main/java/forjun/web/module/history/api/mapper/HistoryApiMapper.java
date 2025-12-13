@@ -1,28 +1,50 @@
 package forjun.web.module.history.api.mapper;
 
-import forjun.web.module.history.api.dto.HistoryCreateRequest;
-import forjun.web.module.history.api.dto.HistoryResponse;
-import forjun.web.module.history.api.dto.HistoryUpdateRequest;
+import forjun.web.module.history.api.dto.CreateHistoryRequest;
+import forjun.web.module.history.api.dto.GetPublicHistoryListRequest;
+import forjun.web.module.history.api.dto.HistoryDetailResponse;
+import forjun.web.module.history.api.dto.UpdateHistoryRequest;
+import forjun.web.module.history.application.port.in.dto.CreateHistoryCommand;
+import forjun.web.module.history.application.port.in.dto.GetHistoryQuery;
+import forjun.web.module.history.application.port.in.dto.GetHistorysQuery;
+import forjun.web.module.history.application.port.in.dto.UpdateHistoryCommand;
 import forjun.web.module.history.domain.History;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
+
+/** 히스토리 API 매퍼 */
+
 @Mapper(componentModel = "spring")
 public interface HistoryApiMapper {
 
+    /** 히스토리 등록 명령 매핑 */
     @Mapping(target = "id", ignore = true)
-    
     @Mapping(target = "userId" , source = "userId")
-    History toDomain(String userId, HistoryCreateRequest request);
+    CreateHistoryCommand toCreateHistoryCommand(String userId, CreateHistoryRequest request);
 
+    /** 히스토리 수정 명령 매핑 */
     @Mapping(target = "userId" , source = "userId")
-    History toDomain(String userId, HistoryUpdateRequest request);
+    UpdateHistoryCommand toUpdateHistoryCommand(String userId, UpdateHistoryRequest request);
 
-    //단일객체
-    HistoryResponse toHistoryResponse(History history);
+    /** 히스토리 조회 쿼리 매핑 */
+    @Mapping(target = "historyId" , source = "historyId")
+    GetHistoryQuery toGetHistoryQuery(Integer historyId);
+
+    /** 히스토리 리스트 조회 쿼리 매핑 */
+    @Mapping(target = "category" , source = "category")
+    @Mapping(target = "userId" , source = "userId")
+    GetHistorysQuery toGetHistorysQuery(String category, String userId);
+
+
+    /** 퍼블릭 히스토리 리스트 조회 쿼리 매핑 */
+    GetHistorysQuery toGetHistorysQuery(GetPublicHistoryListRequest request);
     
-    //리스트 객체
-    List<HistoryResponse> toHistoryReponseList(List<History> historyList);
+    /** 히스토리 응답 매핑 */
+    HistoryDetailResponse toHistoryResponse(History history);
+    
+    /** 히스토리 리스트 응답 매핑 */
+    List<HistoryDetailResponse> toHistoryReponseList(List<History> historyList);
 }

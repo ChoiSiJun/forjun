@@ -6,7 +6,7 @@ import java.util.List;
 import jakarta.validation.constraints.NotNull;
 
 /** 자기소개서 저장 요청 DTO */
-public record SavePersonalRequestDto(
+public record SavePersonalRequest(
     //자기소개서 고유 아이디
     @NotNull(message = "자기소개서 고유 아이디는 필수 항목입니다.")
     Long id,

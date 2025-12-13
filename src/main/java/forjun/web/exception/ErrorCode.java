@@ -74,6 +74,18 @@ public enum ErrorCode {
             "JWT_NOT_GENERATE",
             HttpStatus.UNAUTHORIZED
     ),
+    JWT_NOT_FOUND(
+            "토큰이 존재하지 않습니다.",
+            "토큰 미존재 -> 원인:{}",
+            "JWT_NOT_FOUND",
+            HttpStatus.NOT_FOUND
+    ),
+    JWT_EXPIRED(
+            "토큰이 만료되었습니다.",
+            "토큰 만료 -> 원인:{}",
+            "JWT_EXPIRED",
+            HttpStatus.UNAUTHORIZED
+    ),
 
     // Upload
     FILE_NOT_FOUND(

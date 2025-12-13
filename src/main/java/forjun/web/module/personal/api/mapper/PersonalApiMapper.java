@@ -1,7 +1,7 @@
 package forjun.web.module.personal.api.mapper;
 
-import forjun.web.module.personal.api.dto.PersonalDetailResponseDto;
-import forjun.web.module.personal.api.dto.SavePersonalRequestDto;
+import forjun.web.module.personal.api.dto.PersonalDetailResponse;
+import forjun.web.module.personal.api.dto.SavePersonalRequest;
 import forjun.web.module.personal.application.port.in.dto.SavePersonalCommand;
 import forjun.web.module.personal.domain.Personal;
 import forjun.web.module.personal.domain.value.PersonalAward;
@@ -25,7 +25,7 @@ public class PersonalApiMapper {
     private String resourceUrl;
 
     /** 자기소개서 도메인 변환 */
-    public SavePersonalCommand toSavePersonalCommand(String userId, SavePersonalRequestDto request) {
+    public SavePersonalCommand toSavePersonalCommand(String userId, SavePersonalRequest request) {
         
         List<SavePersonalCommand.PersonalAward> awards = new ArrayList<>();
         List<SavePersonalCommand.PersonalSkill> skills = new ArrayList<>();
@@ -45,7 +45,7 @@ public class PersonalApiMapper {
 
 
     /** 자기소개서 상세 응답 DTO 변환 */
-    public PersonalDetailResponseDto toPersonalResponseDto(Personal personal) {
+    public PersonalDetailResponse toPersonalResponseDto(Personal personal) {
 
         // 자기소개서가 없으면 null 반환
         if(personal == null){
@@ -53,37 +53,37 @@ public class PersonalApiMapper {
         }
 
         // 수상 리스트
-        List<PersonalDetailResponseDto.PersonalAwardResponse> awardList = new ArrayList<>();
+        List<PersonalDetailResponse.PersonalAwardResponse> awardList = new ArrayList<>();
         // 경력 리스트
-        List<PersonalDetailResponseDto.PersonalCompanyResponse> companyList = new ArrayList<>();
+        List<PersonalDetailResponse.PersonalCompanyResponse> companyList = new ArrayList<>();
         // 스킬 리스트
-        List<PersonalDetailResponseDto.PersonalSkillResponse> skillList = new ArrayList<>();
+        List<PersonalDetailResponse.PersonalSkillResponse> skillList = new ArrayList<>();
 
         // 수상 리스트 추가
         personal.getPersonalAwards().forEach(award -> {
             awardList.add(
-                new PersonalDetailResponseDto.PersonalAwardResponse(
+                new PersonalDetailResponse.PersonalAwardResponse(
                         award.getAwardName()));
         });
 
         // 스킬 리스트 추가
         personal.getPersonalSkills().forEach(skill -> {
             skillList.add(
-                new PersonalDetailResponseDto.PersonalSkillResponse(
+                new PersonalDetailResponse.PersonalSkillResponse(
                         skill.getSkillName()));
         });
 
         // 경력 리스트 추가
         personal.getPersonalCompanys().forEach(company -> {
             companyList.add(
-                new PersonalDetailResponseDto.PersonalCompanyResponse(
+                new PersonalDetailResponse.PersonalCompanyResponse(
                         company.getCompanyName(),
                         company.getStartDate(),
                         company.getEndDate()));
         });
 
 
-        return new PersonalDetailResponseDto(
+        return new PersonalDetailResponse(
             personal.getId(),
             personal.getName(),
             personal.getJob(),

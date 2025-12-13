@@ -41,7 +41,27 @@ public class JwtUtil {
     }
 
     public String extractSubject(String token) {
-        return extractAllClaims(token).getSubject();
+        //JWT 토큰 추출
+        Claims claims = extractAllClaims(token);
+
+        //토큰이 없는 경우 처리
+        if(claims == null){
+            throw new AppException(ErrorCode.JWT_NOT_FOUND);
+        }
+
+        //유효성 검사
+        if(isTokenExpired(token)){
+            throw new AppException(ErrorCode.JWT_EXPIRED);
+        }
+
+        //ID 추출
+        String id = claims.getSubject();
+        if(id == null || id.isEmpty()){
+            throw new AppException(ErrorCode.JWT_NOT_FOUND);
+        }
+
+        //ID 반환
+        return claims.getSubject();
     }
 
     private boolean isTokenExpired(String token) {

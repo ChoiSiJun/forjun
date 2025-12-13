@@ -5,7 +5,7 @@ import java.util.Optional;
 
 
 /** 자기소개서 상세 응답 DTO */
-public record PersonalDetailResponseDto(
+public record PersonalDetailResponse(
     //고유 아이디   
     Long id,
     //직업

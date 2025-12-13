@@ -1,11 +1,17 @@
 package forjun.web.module.history.application.port.in;
 
+import forjun.web.module.history.application.port.in.dto.GetHistoryQuery;
+import forjun.web.module.history.application.port.in.dto.GetHistorysQuery;
 import forjun.web.module.history.domain.History;
 
 import java.util.List;
 
+/** 히스토리 조회 인터페이스 */
 public interface HistoryQuery {
-    List<History> getHistorys(String category,String userId);
 
-    History getHistory(Integer historyId);
+    //히스토리 리스트 조회
+    List<History> getHistorys(GetHistorysQuery query);
+
+    //히스토리 조회
+    History getHistory(GetHistoryQuery query);
 }

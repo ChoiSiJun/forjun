@@ -2,6 +2,8 @@ package forjun.web.module.personal.application;
 
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
 import forjun.web.module.personal.application.port.in.dto.SavePersonalCommand;
 import forjun.web.module.personal.domain.Personal;
 import forjun.web.module.personal.domain.value.PersonalAward;

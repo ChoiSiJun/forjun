@@ -1,14 +1,12 @@
 package forjun.web.module.personal.api;
 
 import forjun.web.config.security.CustomUserDetail;
-import forjun.web.module.personal.api.dto.PersonalDetailResponseDto;
-import forjun.web.module.personal.api.dto.SavePersonalRequestDto;
+import forjun.web.module.personal.api.dto.PersonalDetailResponse;
+import forjun.web.module.personal.api.dto.SavePersonalRequest;
 import forjun.web.module.personal.api.mapper.PersonalApiMapper;
-import forjun.web.module.personal.application.PersonalService;
 import forjun.web.module.personal.application.port.in.PersonalQuery;
 import forjun.web.module.personal.application.port.in.PersonalUseCase;
 import forjun.web.module.personal.application.port.in.dto.GetPersonalQuery;
-import forjun.web.module.personal.application.port.in.dto.SavePersonalCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "자기소개서 제어 API", description = "자기소개서 제어 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/personal")
+@RequestMapping("/api/v1/personal")
 public class PersonalController {
 
     // Mapper
@@ -39,7 +37,7 @@ public class PersonalController {
     @PostMapping
     public ResponseEntity<Void> savePersonal(
         @AuthenticationPrincipal CustomUserDetail user, 
-        @Valid @RequestBody SavePersonalRequestDto requestDto
+        @Valid @RequestBody SavePersonalRequest requestDto
     ) {
 
         // 인증 정보 가져오기
@@ -52,9 +50,11 @@ public class PersonalController {
     @Operation(summary = "자기소개서 가져오기", description = "자기소개서 가져오기")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping
-    public ResponseEntity<PersonalDetailResponseDto> getPersonal(  
+    public ResponseEntity<PersonalDetailResponse> getPersonal(  
         @AuthenticationPrincipal CustomUserDetail user
     ) {
+
+        // 자기소개서 조회
         return ResponseEntity.ok(
             personalApiMapper.toPersonalResponseDto(
                 personalQuery.getPersonal(new GetPersonalQuery(user.getUserId()))
