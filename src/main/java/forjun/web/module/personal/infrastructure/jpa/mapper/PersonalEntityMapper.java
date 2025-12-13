@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @Component
 public class PersonalEntityMapper {
 
+    /** 자기소개서 도메인 -> 자기소개서 JPA 엔티티 변환 */
     public PersonalEntity toEntity(Personal personal) {
         PersonalEntity personalEntity = PersonalEntity.builder()
                 .userId(personal.getUserId())
@@ -49,31 +50,31 @@ public class PersonalEntityMapper {
         return personalEntity;
     }
 
-    // PersonalAward (도메인) -> PersonalAwardEntity (JPA)
+    /** 수상 도메인 -> 수상 JPA 엔티티 변환 */
     public PersonalAwardEntity toEntity(PersonalAward award) {
         return PersonalAwardEntity.builder()
-                .awardName(award.getAward_name())
+                .awardName(award.getAwardName())
                 .build();
     }
 
-    // PersonalSkill (도메인) -> PersonalSkillEntity (JPA)
+    /** 스킬 도메인 -> 스킬 JPA 엔티티 변환 */
     public PersonalSkillEntity toEntity(PersonalSkill skill) {
         return PersonalSkillEntity.builder()
                 .skillName(skill.getSkillName())
                 .build();
     }
 
-    // PersonalCompany (도메인) -> PersonalCompanyEntity (JPA)
+    /** 경력 도메인 -> 경력 JPA 엔티티 변환 */
     public PersonalCompanyEntity toEntity(PersonalCompany company) {
         return PersonalCompanyEntity.builder()
-                .companyName(company.getCompany_name())
+                .companyName(company.getCompanyName())
                 .startDate(company.getStartDate())
                 .endDate(company.getEndDate())
                 .build();
     }
 
 
-    // PersonalEntity (JPA) -> Personal (도메인)
+    /** 자기소개서 JPA 엔티티 -> 자기소개서 도메인 변환 */
     public Personal toDomain(PersonalEntity personalEntity) {
         if (personalEntity == null) return null;
 
@@ -113,7 +114,7 @@ public class PersonalEntityMapper {
     // PersonalAwardEntity (JPA) -> PersonalAward (도메인)
     public PersonalAward toDomain(PersonalAwardEntity awardEntity) {
         return PersonalAward.builder()
-                .award_name(awardEntity.getAwardName())
+                .awardName(awardEntity.getAwardName())
                 .build();
     }
 
@@ -127,7 +128,7 @@ public class PersonalEntityMapper {
     // PersonalCompanyEntity (JPA) -> PersonalCompany (도메인)
     public PersonalCompany toDomain(PersonalCompanyEntity companyEntity) {
         return PersonalCompany.builder()
-                .company_name(companyEntity.getCompanyName())
+                .companyName(companyEntity.getCompanyName())
                 .startDate(companyEntity.getStartDate())
                 .endDate(companyEntity.getEndDate())
                 .build();

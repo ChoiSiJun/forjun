@@ -25,6 +25,8 @@ public class PersonalJpaAdapater implements PersonalJpaPort {
     public void savePersonal(Personal personal) {
 
         PersonalEntity origin_personalEntity = personalRepository.findByUserId(personal.getUserId()).orElse(null);
+
+        // 자기소개서 존재 여부 확인
         if(origin_personalEntity != null) {
 
             List<PersonalAwardEntity> personalAwardEntityList = personal.getPersonalAwards().stream().map(
@@ -32,7 +34,7 @@ public class PersonalJpaAdapater implements PersonalJpaPort {
             ).toList();
 
             List<PersonalSkillEntity> personalSkillEntityList = personal.getPersonalSkills().stream().map(
-                    personalEntityMapper::toEntity
+                    personalEntityMapper::toEntity                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
             ).toList();
 
             List<PersonalCompanyEntity> personalCompanyEntityList = personal.getPersonalCompanys().stream().map(

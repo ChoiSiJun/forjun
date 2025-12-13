@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PersonalAward {
-    private String award_name;
+    private String awardName;
 }

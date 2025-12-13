@@ -1,0 +1,38 @@
+package forjun.web.module.personal.api.dto;
+
+import java.util.List;
+import java.util.Optional;
+
+
+/** 자기소개서 상세 응답 DTO */
+public record PersonalDetailResponseDto(
+    //고유 아이디   
+    Long id,
+    //직업
+    String job,
+    //이름
+    String name,
+    //프로필 이미지
+    String profileImageUrl,
+    //수상  
+    List<PersonalAwardResponse> awards,
+    //경력
+    List<PersonalCompanyResponse> companies,
+    //스킬
+    List<PersonalSkillResponse> skills
+) {
+
+
+    /** 수상 응답 DTO */
+    public static record PersonalAwardResponse(String awardName) {}
+
+    /** 경력 응답 DTO */
+    public static record PersonalCompanyResponse(
+        String companyName,
+        String startDate,
+        String endDate
+    ) {}
+
+    /** 스킬 응답 DTO */
+    public static record PersonalSkillResponse(String skillName) {}
+}

@@ -1,0 +1,31 @@
+package forjun.web.module.personal.application.port.in.dto;
+
+import java.util.List;
+
+/** 자기소개서 저장 명령 */
+public record SavePersonalCommand(
+
+    /** 사용자 ID */
+    String userId, 
+    /** 직업 */
+    String job, 
+    /** 이름 */
+    String name, 
+    /** 프로필 이미지 URL */
+    String profile_image_url, 
+    /** 수상 명령 */
+    List<PersonalAward> awards, 
+    /** 스킬 명령 */
+    List<PersonalSkill> skills, 
+    /** 경력 명령 */
+    List<PersonalCompany> companies
+) {
+
+    /** 수상 명령 */
+    public static record PersonalAward(String awardName) {}
+    /** 스킬 명령 */
+    public static record PersonalSkill(String skillName) {}
+    /** 경력 명령 */
+    public static record PersonalCompany(String companyName, String startDate, String endDate) {}
+
+}

@@ -19,13 +19,17 @@ public class PersonalEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String userId; // 시스템의 사용자 ID (auth/user 서비스와 연결)
+    /** 사용자 ID */
+    @Column(nullable = false , unique = true)
+    private String userId; 
 
+    /** 이름 */
     private String name;
 
+    /** 직업 */
     private String job;
 
+    /** 프로필 이미지 URL */
     private String profileImageUrl;
 
     // 경력
@@ -46,6 +50,8 @@ public class PersonalEntity {
     // ==========================
     // 기능 메서드
     // ==========================
+
+    /** 자기소개서 업데이트 */
     public PersonalEntity update(Personal personal ,
                                  List<PersonalAwardEntity> newAwards,
                                  List<PersonalSkillEntity> newSkills,
@@ -73,31 +79,37 @@ public class PersonalEntity {
     // 연관관계 편의 메서드들
     // ==========================
 
+    /** 경력 추가 */
     public void addCompany(PersonalCompanyEntity company) {
         companies.add(company);
         company.setPersonal(this);
     }
 
+    /** 경력 삭제 */
     public void removeCompany(PersonalCompanyEntity company) {
         companies.remove(company);
         company.setPersonal(null);
     }
 
+    /** 스킬 추가 */
     public void addSkill(PersonalSkillEntity skill) {
         skills.add(skill);
         skill.setPersonal(this);
     }
 
+    /** 스킬 삭제 */
     public void removeSkill(PersonalSkillEntity skill) {
         skills.remove(skill);
         skill.setPersonal(null);
     }
 
+    /** 수상 추가 */
     public void addAward(PersonalAwardEntity award) {
         awards.add(award);
         award.setPersonal(this);
     }
 
+    /** 수상 삭제 */
     public void removeAward(PersonalAwardEntity award) {
         awards.remove(award);
         award.setPersonal(null);

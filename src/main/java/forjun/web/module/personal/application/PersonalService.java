@@ -2,6 +2,8 @@ package forjun.web.module.personal.application;
 
 import forjun.web.module.personal.application.port.in.PersonalQuery;
 import forjun.web.module.personal.application.port.in.PersonalUseCase;
+import forjun.web.module.personal.application.port.in.dto.GetPersonalQuery;
+import forjun.web.module.personal.application.port.in.dto.SavePersonalCommand;
 import forjun.web.module.personal.domain.Personal;
 import forjun.web.module.personal.infrastructure.jpa.PersonalJpaAdapater;
 import jakarta.transaction.Transactional;
@@ -18,16 +20,15 @@ public class PersonalService implements PersonalUseCase , PersonalQuery {
     private final PersonalJpaAdapater personalJpaAdapater;
     
     @Override
-    public void savePersonal(Personal personal) {
+    public void savePersonal(SavePersonalCommand command) {
 
-        //Personal 어댑터 호출
-        personalJpaAdapater.savePersonal(personal);
+        // 자기소개서 도메인 생성
+        personalJpaAdapater.savePersonal(PersonalFactory.createPersonal(command));
         
     }
 
     @Override
-    public Personal getPersonal(String userId) {
-
-        return personalJpaAdapater.getPersonal(userId).orElse(null);
+    public Personal getPersonal(GetPersonalQuery query) {
+        return personalJpaAdapater.getPersonal(query.userId()).orElse(null);
     }
 }

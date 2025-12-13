@@ -6,7 +6,11 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PersonalCompany {
-    private String company_name;
+
+    /** 회사명 */
+    private String companyName;
+    /** 시작일 */
     private String startDate;
+    /** 종료일 */
     private String endDate;
 }

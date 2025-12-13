@@ -6,7 +6,15 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
 
-    // USER
+    // 유효성 검사
+    VALIDATION_FAILED(
+            "필수 입력값이 누락되었습니다.",
+            "유효성 검사 실패 -> 원인:{}",
+            "VALIDATION_FAILED",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    // 유저
     USER_NOT_FOUND(
             "존재하지 않는 이용자입니다.",
             "존재하지 않는 이용자입니다 -> ID:{}",
@@ -42,7 +50,7 @@ public enum ErrorCode {
             HttpStatus.NOT_FOUND
     ),
 
-    //인증 / 인가
+    //인증 & 인가
     ID_NOT_FOUND(
             "아이디가 존재하지 않습니다.",
             "아이디 미존재 -> ID:{}",
@@ -88,6 +96,7 @@ public enum ErrorCode {
             "FILE_DELETE_FAIL",
             HttpStatus.INTERNAL_SERVER_ERROR
     ),
+
     // SERVER
     SERVER_ERROR(
             "예상치 못한 서버 오류가 발생하였습니다.",
