@@ -22,13 +22,12 @@ import java.util.List;
 public interface HistoryApiMapper {
 
     /** 히스토리 등록 명령 매핑 */
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "userId" , source = "userId")
     CreateHistoryCommand toCreateHistoryCommand(String userId, CreateHistoryRequest request);
 
     /** 히스토리 수정 명령 매핑 */
-    @Mapping(target = "userId" , source = "userId")
-    UpdateHistoryCommand toUpdateHistoryCommand(String userId, UpdateHistoryRequest request);
+    @Mapping(target = "id" , source = "historyId")
+    UpdateHistoryCommand toUpdateHistoryCommand(int historyId, UpdateHistoryRequest request);
 
     /** 히스토리 조회 쿼리 매핑 */
     @Mapping(target = "historyId" , source = "historyId")

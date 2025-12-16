@@ -40,9 +40,9 @@ public class HistoryApi {
     }
     /** 히스토리 업데이트 */
     @Operation(summary = "히스토리 업데이트", description = "히스토리 업데이트")
-    @PutMapping
-    public ResponseEntity<Void> updateHistory(@AuthenticationPrincipal CustomUserDetail user, @RequestBody UpdateHistoryRequest request){
-        historyUsecase.updateHistory(historyApiMapper.toUpdateHistoryCommand(user.getUserId() , request));
+    @PutMapping("/{historyId}")
+    public ResponseEntity<Void> updateHistory(@PathVariable int historyId, @RequestBody UpdateHistoryRequest request){
+        historyUsecase.updateHistory(historyApiMapper.toUpdateHistoryCommand(historyId, request));
         return ResponseEntity.ok().build();
     }
 
