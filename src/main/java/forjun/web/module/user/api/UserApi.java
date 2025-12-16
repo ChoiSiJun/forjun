@@ -5,13 +5,16 @@ import forjun.web.module.user.api.dto.*;
 import forjun.web.module.user.api.mapper.UserApiMapper;
 import forjun.web.module.user.application.port.in.UserQuery;
 import forjun.web.module.user.application.port.in.UserUsecase;
-import forjun.web.module.user.domain.User;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "사용자 제어 API", description = "사용자 제어 API")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
@@ -21,32 +24,36 @@ public class UserApi {
     private final UserUsecase userUsecase;
     private final UserApiMapper userApiMapper;
 
-    /** 이용자 회원가입 **/
+    /** 이용자 회원가입 */
+    @Operation(summary = "이용자 회원가입", description = "이용자 회원가입")
     @PostMapping
     public ResponseEntity<Void> saveUser(@Valid @RequestBody UserJoinRequest userJoinRequest) {
-        userUsecase.saveUser(userApiMapper.toDomain(userJoinRequest));
+        userUsecase.joinUser(userApiMapper.toUserJoinCommand(userJoinRequest));
         return ResponseEntity.ok().build();
     }
 
     /**
      * 이용자 아이디로 중복체크
      **/
+    @Operation(summary = "이용자 아이디 중복체크", description = "이용자 아이디 중복체크")
     @GetMapping("/duplicate")
     public ResponseEntity<Boolean> duplicateUser(@Valid @RequestParam @NotBlank(message = "아이디를 입력하지 않으셨습니다.") String userId){
-        return ResponseEntity.ok(userQuery.existsByUserId(userId));
+        return ResponseEntity.ok(userQuery.existsByUserId(userApiMapper.toExistUserCheckByUserIdQuery(userId)));
     }
 
     /** 이용자 아이디로 정보조회 **/
     @GetMapping("/{id}")
+    @Operation(summary = "이용자 정보조회", description = "이용자 정보조회")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<UserInfoResponse> viewUser(@PathVariable(name="id") Long id){
-        User user = userQuery.getUser(id);
-        return ResponseEntity.ok(UserInfoResponse.fromDomain(user));
+        return ResponseEntity.ok(userApiMapper.toUserInfoResponse(userQuery.getUser(userApiMapper.toGetUserInfoQuery(id))));
     }
 
     /** 이용자 로그인**/
+    @Operation(summary = "이용자 로그인", description = "이용자 로그인")
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@Valid @RequestBody UserLoginRequest request){
-        String token = userQuery.authentication(userApiMapper.toDomain(request));
+        String token = userQuery.authentication(userApiMapper.toAuthenticationUserQuery(request));
         return ResponseEntity.ok(token);
     }
 }

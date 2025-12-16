@@ -4,6 +4,13 @@ import forjun.web.exception.AppException;
 import forjun.web.exception.ErrorCode;
 import forjun.web.module.user.application.port.in.UserQuery;
 import forjun.web.module.user.application.port.in.UserUsecase;
+import forjun.web.module.user.application.port.in.dto.AuthenticationUserQuery;
+import forjun.web.module.user.application.port.in.dto.ChangeUserInfoCommand;
+import forjun.web.module.user.application.port.in.dto.DeleteUserCommand;
+import forjun.web.module.user.application.port.in.dto.ExistUserCheckByUserIdQuery;
+import forjun.web.module.user.application.port.in.dto.GetUserInfoByUserIdQuery;
+import forjun.web.module.user.application.port.in.dto.GetUserInfoQuery;
+import forjun.web.module.user.application.port.in.dto.JoinUserCommand;
 import forjun.web.module.user.application.port.out.UserJpaPort;
 import forjun.web.module.user.domain.User;
 import forjun.web.util.JwtUtil;
@@ -23,9 +30,10 @@ public class UserService implements UserQuery, UserUsecase {
 
     //유저 저장
     @Override
-    public void saveUser(User user){
+    public void joinUser(JoinUserCommand command){
 
         //패스워드 암호화.
+        User user = UserFactory.createUser(command);
         user.decryptPassword();
 
         //기존 가입정보 있는지 확인.
@@ -38,55 +46,82 @@ public class UserService implements UserQuery, UserUsecase {
     }
 
     @Override
-    public void deleteUser(Long id) {
-        userJpaPort.deleteUser(id);
+    public void withdrawUser(DeleteUserCommand command) {
+
+        //기존 가입정보 있는지 확인.
+        if(!userJpaPort.existsById(command.id())){
+            throw AppException.of(ErrorCode.USER_NOT_FOUND, command.id());
+        }
+
+        //유저 삭제
+        userJpaPort.deleteUser(command.id());
     }
 
     @Override
-    public void updateUser(User user) {
+    public void changeUserInfo(ChangeUserInfoCommand command) {
 
         //기존 가입정보 있는지 확인.
-        if(!userJpaPort.existsById(user.getId())){
-            throw AppException.of(ErrorCode.USER_NOT_FOUND, user.getId());
+        if(!userJpaPort.existsById(command.id())){
+            throw AppException.of(ErrorCode.USER_NOT_FOUND, command.id());
         }
 
-        //유저 저장
+        //유저 정보 수정 도메인 생성
+        User user = UserFactory.createUser(command);
+
+        //유저 정보 수정
         userJpaPort.saveUser(user);
     }
 
     @Override
-    public User getUser(Long id) {
-        User user = userJpaPort.getUser(id);
+    public User getUser(GetUserInfoQuery query) {
+
+        //기존 가입정보 있는지 확인.
+        User user = userJpaPort.getUser(query.id());
         if(user == null){
-            throw AppException.of(ErrorCode.USER_NOT_FOUND, id);
+            throw AppException.of(ErrorCode.USER_NOT_FOUND, query.id());
         }
-        return userJpaPort.getUser(id);
+        
+        //유저 정보 조회
+        return userJpaPort.getUser(query.id());
     }
 
     @Override
-    public User getUserByUserId(String userId) {
-        return userJpaPort.getUserByUserId(userId);
+    public User getUserByUserId(GetUserInfoByUserIdQuery query) {
+
+        //유저 정보 조회
+        User user = userJpaPort.getUserByUserId(query.userId());
+
+        //유저 정보 없는 경우 예외 발생
+        if(user == null){
+            throw AppException.of(ErrorCode.USER_NOT_FOUND, query.userId());
+        }
+    
+        return user;
     }
 
     @Override
-    public String authentication(User user) {
+    public String authentication(AuthenticationUserQuery query) {
 
-        String input_id = user.getUserId();
-        String input_password = user.getPassword();
-        user = userJpaPort.getUserByUserId(user.getUserId());
+ 
+        //유저 정보 조회
+        User user = userJpaPort.getUserByUserId(query.userId());
         if (user == null) {
-            throw AppException.of(ErrorCode.ID_NOT_FOUND, input_id);
+            throw AppException.of(ErrorCode.USER_NOT_FOUND, query.userId());
         }
 
+        //패스워드 일치 체크
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if(!passwordEncoder.matches(input_password, user.getPassword())){
-            throw AppException.of(ErrorCode.PASSWORD_NOT_MATCH, input_id);
+
+
+        if(!passwordEncoder.matches(query.password(), user.getPassword())){
+            throw AppException.of(ErrorCode.PASSWORD_NOT_MATCH, query.userId());
         }
+        
         return jwtUtil.generateToken(user.getUserId() , user.getUserName() , user.getAuthority());
     }
 
     @Override
-    public boolean existsByUserId(String userid) {
-        return userJpaPort.existsByUserId(userid);
+    public boolean existsByUserId(ExistUserCheckByUserIdQuery query) {
+        return userJpaPort.existsByUserId(query.userId());
     }
 }

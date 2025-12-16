@@ -7,6 +7,7 @@ import forjun.web.module.history.api.dto.UpdateHistoryRequest;
 import forjun.web.module.history.application.port.in.dto.CreateHistoryCommand;
 import forjun.web.module.history.application.port.in.dto.GetHistoryQuery;
 import forjun.web.module.history.application.port.in.dto.GetHistorysQuery;
+import forjun.web.module.history.application.port.in.dto.GetPublicHistorysQuery;
 import forjun.web.module.history.application.port.in.dto.UpdateHistoryCommand;
 import forjun.web.module.history.domain.History;
 import org.mapstruct.Mapper;
@@ -40,7 +41,7 @@ public interface HistoryApiMapper {
 
 
     /** 퍼블릭 히스토리 리스트 조회 쿼리 매핑 */
-    GetHistorysQuery toGetHistorysQuery(GetPublicHistoryListRequest request);
+    GetPublicHistorysQuery toGetHistorysQuery(GetPublicHistoryListRequest request);
     
     /** 히스토리 응답 매핑 */
     HistoryDetailResponse toHistoryResponse(History history);

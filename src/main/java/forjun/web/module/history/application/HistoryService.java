@@ -7,8 +7,13 @@ import forjun.web.module.history.application.port.in.HistoryUsecase;
 import forjun.web.module.history.application.port.in.dto.CreateHistoryCommand;
 import forjun.web.module.history.application.port.in.dto.GetHistoryQuery;
 import forjun.web.module.history.application.port.in.dto.GetHistorysQuery;
+import forjun.web.module.history.application.port.in.dto.GetPublicHistorysQuery;
 import forjun.web.module.history.application.port.in.dto.UpdateHistoryCommand;
 import forjun.web.module.history.domain.History;
+import forjun.web.module.user.application.port.in.UserQuery;
+import forjun.web.module.user.application.port.in.dto.GetUserInfoByUserIdQuery;
+import forjun.web.module.user.domain.PrivateStatus;
+import forjun.web.module.user.domain.User;
 import forjun.web.module.history.application.port.out.HistoryJpaPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +27,11 @@ import java.util.Optional;
 @Transactional
 public class HistoryService implements HistoryQuery , HistoryUsecase {
 
+    /** 히스토리 Jpa 포트 */
     private final HistoryJpaPort historyJpaPort;
+
+    /** 유저 서비스 */
+    private final UserQuery userQuery;
 
     @Override
     public void createHistory(CreateHistoryCommand command) {
@@ -71,5 +80,30 @@ public class HistoryService implements HistoryQuery , HistoryUsecase {
 
         //히스토리 반환
         return historyOptional.get();
+    }
+
+    /** 퍼블릭 히스토리 리스트 조회 */
+    @Override
+    public List<History> getPublicHistorys(GetPublicHistorysQuery query) {
+
+        //퍼블릭 히스토리 유저 접근정보 체크
+        String userId = query.userId();
+
+        //유저 정보 조회
+        GetUserInfoByUserIdQuery userParameterQuery = new GetUserInfoByUserIdQuery(userId);
+        User user = userQuery.getUserByUserId(userParameterQuery);
+
+        //유저 존재여부 체크
+        if(user == null){
+            throw AppException.of(ErrorCode.USER_NOT_FOUND, userId);
+        }
+
+        //히스토리 접근 권한 체크
+        if(!user.getHistoryPrivate().equals(PrivateStatus.PUBLIC.name())){
+            throw AppException.of(ErrorCode.HISTORY_NOT_ACCESS, query.userId());
+        }
+
+        //퍼블릭 히스토리 리스트 조회
+        return historyJpaPort.getHistorys(query.category() , query.userId());
     }
 }

@@ -1,16 +1,18 @@
 package forjun.web.module.user.application.port.in;
 
-import forjun.web.module.user.domain.User;
+import forjun.web.module.user.application.port.in.dto.ChangeUserInfoCommand;
+import forjun.web.module.user.application.port.in.dto.DeleteUserCommand;
+import forjun.web.module.user.application.port.in.dto.JoinUserCommand;
 
 public interface UserUsecase {
 
-    //유저 저장
-    public void saveUser(User user);
+    //유저 회원가입
+    public void joinUser(JoinUserCommand command);
 
     //유저 삭제
-    public void deleteUser(Long id);
+    public void withdrawUser(DeleteUserCommand id);
 
     //유저 수정
-    public void updateUser(User user);
+    public void changeUserInfo(ChangeUserInfoCommand command);
 
 }

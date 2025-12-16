@@ -42,12 +42,28 @@ public enum ErrorCode {
             HttpStatus.NOT_FOUND
     ),
 
+    //히스토리 접근 권한 없음
+    HISTORY_NOT_ACCESS(
+            "히스토리 접근 권한이 없습니다.",
+            "히스토리 접근 권한 없음 -> ID:{}",
+            "HISTORY_NOT_ACCESS",
+            HttpStatus.FORBIDDEN
+    ),
+
     //자기소개서
     PERSONAL_NOT_FOUND(
             "자기소개서가 존재하지 않습니다.",
             "자기소개서 미존재 -> ID:{}",
             "PERSONAL_NOT_FOUND",
             HttpStatus.NOT_FOUND
+    ),
+
+    //자기소개서 접근 권한 없음
+    PERSONAL_NOT_ACCESS(
+            "자기소개서 접근 권한이 없습니다.",
+            "자기소개서 접근 권한 없음 -> ID:{}",
+            "PERSONAL_NOT_ACCESS",
+            HttpStatus.FORBIDDEN
     ),
 
     //인증 & 인가

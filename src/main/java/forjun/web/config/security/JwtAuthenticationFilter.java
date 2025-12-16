@@ -1,6 +1,7 @@
 package forjun.web.config.security;
 
 import forjun.web.module.user.application.UserService;
+import forjun.web.module.user.application.port.in.dto.GetUserInfoByUserIdQuery;
 import forjun.web.module.user.domain.User;
 import forjun.web.util.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -64,7 +65,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (id != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             // 사용자 조회 (DB 접근)
-            User user = userService.getUserByUserId(id);
+            GetUserInfoByUserIdQuery query = new GetUserInfoByUserIdQuery(id);
+            User user = userService.getUserByUserId(query);
 
             //사용자 존재 경우 처리
             if (user != null) {

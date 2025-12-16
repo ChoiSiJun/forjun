@@ -1,12 +1,21 @@
 package forjun.web.module.user.application.port.in;
+import forjun.web.module.user.application.port.in.dto.AuthenticationUserQuery;
+import forjun.web.module.user.application.port.in.dto.ExistUserCheckByUserIdQuery;
+import forjun.web.module.user.application.port.in.dto.GetUserInfoByUserIdQuery;
+import forjun.web.module.user.application.port.in.dto.GetUserInfoQuery;
 import forjun.web.module.user.domain.User;
 
 public interface UserQuery {
-    User getUser(Long id);
 
-    User getUserByUserId(String userId);
+    /** 유저 정보 조회 */
+    User getUser(GetUserInfoQuery query);
 
-    String authentication(User user);
+    /** 유저 정보 조회 */   
+    User getUserByUserId(GetUserInfoByUserIdQuery query);
 
-    boolean existsByUserId(String userId);
+    /** 유저 인증 */
+    String authentication(AuthenticationUserQuery query);
+
+    /** 유저 아이디 존재 여부 체크 */
+    boolean existsByUserId(ExistUserCheckByUserIdQuery query);
 }

@@ -28,9 +28,6 @@ public class SecurityConfig {
 
     /** JWT 인증 필터 */
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    /** 접근 페이지 필터 */
-    private final AccessPageFilter accessPageFilter;
     /** 공개 URL 설정 */
     private final PublicUrlConfig publicUrlConfig;
 
@@ -59,8 +56,8 @@ public class SecurityConfig {
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .addFilterAfter(accessPageFilter, JwtAuthenticationFilter.class);
+        //JWT 인증 필터 추가
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

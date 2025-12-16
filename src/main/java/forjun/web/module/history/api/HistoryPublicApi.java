@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import forjun.web.module.history.api.dto.GetPublicHistoryListRequest;
@@ -34,7 +33,7 @@ public class HistoryPublicApi {
 
         //히스토리 리스트 조회
         return ResponseEntity.ok(historyApiMapper.toHistoryReponseList(
-            historyQuery.getHistorys(historyApiMapper.toGetHistorysQuery(request))
+            historyQuery.getPublicHistorys(historyApiMapper.toGetHistorysQuery(request))
         ));
 
     }    

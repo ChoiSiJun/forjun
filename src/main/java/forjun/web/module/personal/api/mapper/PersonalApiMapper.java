@@ -4,9 +4,6 @@ import forjun.web.module.personal.api.dto.PersonalDetailResponse;
 import forjun.web.module.personal.api.dto.SavePersonalRequest;
 import forjun.web.module.personal.application.port.in.dto.SavePersonalCommand;
 import forjun.web.module.personal.domain.Personal;
-import forjun.web.module.personal.domain.value.PersonalAward;
-import forjun.web.module.personal.domain.value.PersonalCompany;
-import forjun.web.module.personal.domain.value.PersonalSkill;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

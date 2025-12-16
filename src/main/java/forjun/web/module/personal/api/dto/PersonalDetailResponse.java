@@ -1,8 +1,6 @@
 package forjun.web.module.personal.api.dto;
 
 import java.util.List;
-import java.util.Optional;
-
 
 /** 자기소개서 상세 응답 DTO */
 public record PersonalDetailResponse(

@@ -1,21 +1,11 @@
 package forjun.web.module.user.api.dto;
 
+/** 유저 정보 응답 DTO */
+public record UserInfoResponse(
+    String userId,
+    String userName,
+    String email
+) {
+} 
 
-import forjun.web.module.user.domain.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
-@Getter
-@AllArgsConstructor
-public class UserInfoResponse {
-
-    private String userId;
-
-    private String userName;
-
-    private String email;
-
-    public static UserInfoResponse fromDomain(User user){
-        return new UserInfoResponse(user.getUserId(), user.getUserName(), user.getEmail());
-    }
-}
