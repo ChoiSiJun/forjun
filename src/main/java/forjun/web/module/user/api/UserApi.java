@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "사용자 제어 API", description = "사용자 제어 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/user")
+@RequestMapping("api/v1/user")
 public class UserApi {
 
     private final UserQuery userQuery;
@@ -35,7 +35,7 @@ public class UserApi {
     /**
      * 이용자 아이디로 중복체크
      **/
-    @Operation(summary = "이용자 아이디 중복체크", description = "이용자 아이디 중복체크")
+    @Operation(summary = "이용자 아이디 중복체크", description = "이용자 아이디 중복체크 (true = 존재함 or false = 존재하지 않음)")
     @GetMapping("/duplicate")
     public ResponseEntity<Boolean> duplicateUser(@Valid @RequestParam @NotBlank(message = "아이디를 입력하지 않으셨습니다.") String userId){
         return ResponseEntity.ok(userQuery.existsByUserId(userApiMapper.toExistUserCheckByUserIdQuery(userId)));

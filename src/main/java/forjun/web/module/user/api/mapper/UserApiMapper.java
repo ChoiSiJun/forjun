@@ -20,7 +20,7 @@ public interface UserApiMapper {
     //유저 인증
     AuthenticationUserQuery toAuthenticationUserQuery(UserLoginRequest request);
 
-    //유저 아이디 존재 여부 체크
+    //유저 아이디 존재 여부 체크 
     @Mapping(target = "userId", source = "userId")
     ExistUserCheckByUserIdQuery toExistUserCheckByUserIdQuery(String userId);
 

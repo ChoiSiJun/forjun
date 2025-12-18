@@ -16,6 +16,6 @@ public interface UserQuery {
     /** 유저 인증 */
     String authentication(AuthenticationUserQuery query);
 
-    /** 유저 아이디 존재 여부 체크 */
+    /** 유저 아이디 존재 여부 체크 true = 존재함 or false = 존재하지 않음 */
     boolean existsByUserId(ExistUserCheckByUserIdQuery query);
 }
