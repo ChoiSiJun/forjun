@@ -25,6 +25,9 @@ public class PersonalEntityMapper {
                 .userId(personal.getUserId())
                 .name(personal.getName())
                 .job(personal.getJob())
+                .education(personal.getEducation())
+                .gradePointAverage(personal.getGradePointAverage())
+                .introduction(personal.getIntroduction())
                 .profileImageUrl(personal.getProfile_image_url())
                 .build();
 
@@ -128,6 +131,9 @@ public class PersonalEntityMapper {
                 .userId(personalEntity.getUserId())
                 .name(personalEntity.getName())
                 .job(personalEntity.getJob())
+                .education(personalEntity.getEducation())
+                .gradePointAverage(personalEntity.getGradePointAverage())
+                .introduction(personalEntity.getIntroduction())
                 .profile_image_url(personalEntity.getProfileImageUrl())
                 .personalAwards(personalAwards)
                 .personalSkills(personalSkills)

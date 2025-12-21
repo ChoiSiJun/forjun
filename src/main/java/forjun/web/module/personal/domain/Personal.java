@@ -18,6 +18,9 @@ public class Personal {
     private String userId;
     private String job;
     private String name;
+    private String education;
+    private String gradePointAverage;
+    private String introduction;
     private String profile_image_url;
 
     @Builder.Default

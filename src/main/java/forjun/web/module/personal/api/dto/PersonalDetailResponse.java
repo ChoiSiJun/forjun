@@ -10,6 +10,12 @@ public record PersonalDetailResponse(
     String job,
     //이름
     String name,
+    //학력
+    String education,
+    //학점
+    String gradePointAverage,
+    //자기소개
+    String introduction,
     //프로필 이미지
     String profileImageUrl,
     //수상  

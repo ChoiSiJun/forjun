@@ -11,6 +11,12 @@ public record SavePersonalRequest(
     String job,
     //자기소개서 이름
     String name,
+    //자기소개서 학력
+    String education,
+    //자기소개서 학점
+    String gradePointAverage,
+    //자기소개서 자기소개
+    String introduction,
     //자기소개서 프로필 이미지
     String profile_image_url,
     //자기소개서 수상

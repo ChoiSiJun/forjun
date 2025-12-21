@@ -41,7 +41,7 @@ public class PersonalApiMapper {
         // Certificates
         request.certificates().forEach(c -> certificates.add(new SavePersonalCommand.PersonalCertificate(c.certificateName(), c.certificateAcquisitionOrganization(), c.certificateAcquisitionDate())));
 
-        return new SavePersonalCommand(userId, request.job(), request.name(), request.profile_image_url(), awards, skills, companies, certificates);
+        return new SavePersonalCommand(userId, request.job(), request.name(), request.education(), request.gradePointAverage(), request.introduction(), request.profile_image_url(), awards, skills, companies, certificates);
     }
 
 
@@ -100,6 +100,9 @@ public class PersonalApiMapper {
             personal.getId(),
             personal.getName(),
             personal.getJob(),
+            personal.getEducation(),
+            personal.getGradePointAverage(),
+            personal.getIntroduction(),
             resourceDomain + resourceUrl + personal.getProfile_image_url(),
             awardList,
             companyList,

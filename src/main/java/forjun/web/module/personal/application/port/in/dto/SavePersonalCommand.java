@@ -11,6 +11,12 @@ public record SavePersonalCommand(
     String job, 
     /** 이름 */
     String name, 
+    /** 학력 */
+    String education,
+    /** 학점 */
+    String gradePointAverage,
+    /** 자기소개 */
+    String introduction,
     /** 프로필 이미지 URL */
     String profile_image_url, 
     /** 수상 명령 */

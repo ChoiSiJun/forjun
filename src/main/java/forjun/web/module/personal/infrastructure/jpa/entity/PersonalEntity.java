@@ -29,6 +29,15 @@ public class PersonalEntity {
     /** 직업 */
     private String job;
 
+    /** 학력 */
+    private String education;
+
+    /** 학점 */
+    private String gradePointAverage;
+
+    /** 자기소개 */
+    private String introduction;
+
     /** 프로필 이미지 URL */
     private String profileImageUrl;
 
@@ -66,6 +75,9 @@ public class PersonalEntity {
     {
         this.name = personal.getName();
         this.job = personal.getJob();
+        this.education = personal.getEducation();
+        this.gradePointAverage = personal.getGradePointAverage();
+        this.introduction = personal.getIntroduction();
 
         if(personal.getProfile_image_url() != null){
          this.profileImageUrl = personal.getProfile_image_url();
