@@ -17,7 +17,10 @@ public record PersonalDetailResponse(
     //경력
     List<PersonalCompanyResponse> companies,
     //스킬
-    List<PersonalSkillResponse> skills
+    List<PersonalSkillResponse> skills,
+
+    //자격증
+    List<PersonalCertificateResponse> certificates
 ) {
 
 
@@ -32,5 +35,8 @@ public record PersonalDetailResponse(
     ) {}
 
     /** 스킬 응답 DTO */
-    public static record PersonalSkillResponse(String skillName) {}
+    public static record PersonalSkillResponse(String skillName, String skillCategory) {}
+
+    /** 자격증 응답 DTO */
+    public static record PersonalCertificateResponse(String certificateName, String certificateAcquisitionOrganization, String certificateAcquisitionDate) {}
 }

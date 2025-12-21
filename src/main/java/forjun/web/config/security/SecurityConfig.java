@@ -66,12 +66,26 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3001"));  // 허용할 출처
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS" , resourceUrl + "**"));
+        
+        // 1. 허용할 출처 (정확함)
+        configuration.setAllowedOrigins(List.of("http://localhost:3001")); 
+        
+        // 2. 허용할 메서드 (수정됨: 순수 HTTP 메서드만 남깁니다)
+        // 💡 resourceUrl + "**"를 여기서 제거해야 합니다!
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        
+        // 3. 허용할 헤더
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);  // 자격 증명 허용
+        
+        // 4. 자격 증명 허용
+        configuration.setAllowCredentials(true); 
+        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        
+        // 5. 경로별 설정 적용
+        // "/**"는 모든 경로에 위 설정을 적용하겠다는 뜻이므로 이미 resourceUrl 경로도 포함됩니다.
         source.registerCorsConfiguration("/**", configuration);
+        
         return source;
     }
 

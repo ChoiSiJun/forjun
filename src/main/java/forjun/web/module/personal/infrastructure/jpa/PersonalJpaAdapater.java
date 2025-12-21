@@ -3,6 +3,7 @@ package forjun.web.module.personal.infrastructure.jpa;
 import forjun.web.module.personal.application.port.out.PersonalJpaPort;
 import forjun.web.module.personal.domain.Personal;
 import forjun.web.module.personal.infrastructure.jpa.entity.PersonalAwardEntity;
+import forjun.web.module.personal.infrastructure.jpa.entity.PersonalCertificateEntity;
 import forjun.web.module.personal.infrastructure.jpa.entity.PersonalCompanyEntity;
 import forjun.web.module.personal.infrastructure.jpa.entity.PersonalEntity;
 import forjun.web.module.personal.infrastructure.jpa.entity.PersonalSkillEntity;
@@ -41,7 +42,11 @@ public class PersonalJpaAdapater implements PersonalJpaPort {
                     personalEntityMapper::toEntity
             ).toList();
 
-            origin_personalEntity.update(personal,personalAwardEntityList,personalSkillEntityList,personalCompanyEntityList);
+            List<PersonalCertificateEntity> personalCertificateEntityList = personal.getPersonalCertificates().stream().map(
+                    personalEntityMapper::toEntity
+            ).toList();
+
+            origin_personalEntity.update(personal,personalAwardEntityList,personalSkillEntityList,personalCompanyEntityList,personalCertificateEntityList);
 
         }else{
             PersonalEntity personalEntity = personalEntityMapper.toEntity(personal);

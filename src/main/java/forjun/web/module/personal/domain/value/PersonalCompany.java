@@ -3,6 +3,7 @@ package forjun.web.module.personal.domain.value;
 import lombok.Builder;
 import lombok.Getter;
 
+/** 자기소개서 경력 */
 @Getter
 @Builder
 public class PersonalCompany {

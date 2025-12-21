@@ -2,9 +2,11 @@ package forjun.web.module.personal.infrastructure.jpa.mapper;
 
 import forjun.web.module.personal.domain.Personal;
 import forjun.web.module.personal.domain.value.PersonalAward;
+import forjun.web.module.personal.domain.value.PersonalCertificate;
 import forjun.web.module.personal.domain.value.PersonalCompany;
 import forjun.web.module.personal.domain.value.PersonalSkill;
 import forjun.web.module.personal.infrastructure.jpa.entity.PersonalAwardEntity;
+import forjun.web.module.personal.infrastructure.jpa.entity.PersonalCertificateEntity;
 import forjun.web.module.personal.infrastructure.jpa.entity.PersonalCompanyEntity;
 import forjun.web.module.personal.infrastructure.jpa.entity.PersonalEntity;
 import forjun.web.module.personal.infrastructure.jpa.entity.PersonalSkillEntity;
@@ -47,6 +49,13 @@ public class PersonalEntityMapper {
                     personalEntity.addCompany(companyEntity); // 편의 메서드
                 });
 
+        // Certificate 매핑
+        personal.getPersonalCertificates()
+                .forEach(certificate -> {
+                    PersonalCertificateEntity certificateEntity = toEntity(certificate);
+                    personalEntity.addCertificate(certificateEntity); // 편의 메서드
+                });
+
         return personalEntity;
     }
 
@@ -61,6 +70,7 @@ public class PersonalEntityMapper {
     public PersonalSkillEntity toEntity(PersonalSkill skill) {
         return PersonalSkillEntity.builder()
                 .skillName(skill.getSkillName())
+                .skillCategory(skill.getSkillCategory())
                 .build();
     }
 
@@ -73,6 +83,14 @@ public class PersonalEntityMapper {
                 .build();
     }
 
+    /** 자격증 도메인 -> 자격증 JPA 엔티티 변환 */
+    public PersonalCertificateEntity toEntity(PersonalCertificate certificate) {
+        return PersonalCertificateEntity.builder()
+                .certificateName(certificate.getCertificateName())
+                .certificateAcquisitionOrganization(certificate.getCertificateAcquisitionOrganization())
+                .certificateAcquisitionDate(certificate.getCertificateAcquisitionDate())
+                .build();
+    }
 
     /** 자기소개서 JPA 엔티티 -> 자기소개서 도메인 변환 */
     public Personal toDomain(PersonalEntity personalEntity) {
@@ -99,6 +117,12 @@ public class PersonalEntityMapper {
                     .collect(Collectors.toList());
         }
 
+        List<PersonalCertificate> personalCertificates = new ArrayList<>();
+        if (personalEntity.getCertificates() != null) {
+            personalCertificates = personalEntity.getCertificates().stream()
+            .map(this::toDomain).collect(Collectors.toList());
+        }
+
         return Personal.builder()
                 .id(personalEntity.getId())
                 .userId(personalEntity.getUserId())
@@ -108,6 +132,7 @@ public class PersonalEntityMapper {
                 .personalAwards(personalAwards)
                 .personalSkills(personalSkills)
                 .personalCompanys(personalCompanys)
+                .personalCertificates(personalCertificates)
                 .build();
     }
 
@@ -122,6 +147,7 @@ public class PersonalEntityMapper {
     public PersonalSkill toDomain(PersonalSkillEntity skillEntity) {
         return PersonalSkill.builder()
                 .skillName(skillEntity.getSkillName())
+                .skillCategory(skillEntity.getSkillCategory())
                 .build();
     }
 
@@ -131,6 +157,15 @@ public class PersonalEntityMapper {
                 .companyName(companyEntity.getCompanyName())
                 .startDate(companyEntity.getStartDate())
                 .endDate(companyEntity.getEndDate())
+                .build();
+    }
+
+    // PersonalCertificateEntity (JPA) -> PersonalCertificate (도메인)
+    public PersonalCertificate toDomain(PersonalCertificateEntity certificateEntity) {
+        return PersonalCertificate.builder()
+                .certificateName(certificateEntity.getCertificateName())
+                .certificateAcquisitionOrganization(certificateEntity.getCertificateAcquisitionOrganization())
+                .certificateAcquisitionDate(certificateEntity.getCertificateAcquisitionDate())
                 .build();
     }
 }

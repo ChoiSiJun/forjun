@@ -1,6 +1,7 @@
 package forjun.web.module.personal.domain;
 
 import forjun.web.module.personal.domain.value.PersonalAward;
+import forjun.web.module.personal.domain.value.PersonalCertificate;
 import forjun.web.module.personal.domain.value.PersonalCompany;
 import forjun.web.module.personal.domain.value.PersonalSkill;
 import lombok.Builder;
@@ -27,5 +28,8 @@ public class Personal {
 
     @Builder.Default
     List<PersonalSkill> personalSkills = new ArrayList<>();
+
+    @Builder.Default
+    List<PersonalCertificate> personalCertificates = new ArrayList<>();
 
 }

@@ -3,12 +3,9 @@ package forjun.web.module.personal.api.dto;
 import java.util.List;
 // Lombok 어노테이션 불필요
 
-import jakarta.validation.constraints.NotNull;
-
 /** 자기소개서 저장 요청 DTO */
 public record SavePersonalRequest(
     //자기소개서 고유 아이디
-    @NotNull(message = "자기소개서 고유 아이디는 필수 항목입니다.")
     Long id,
     //자기소개서 직업
     String job,
@@ -21,7 +18,9 @@ public record SavePersonalRequest(
     //자기소개서 경력
     List<PersonalCompanyRequest> companies,
     //자기소개서 스킬
-    List<PersonalSkillRequest> skills
+    List<PersonalSkillRequest> skills,
+    //자기소개서 자격증
+    List<PersonalCertificateRequest> certificates
 ) {
   
     /** 자기소개서 수상 요청 Record  */
@@ -35,5 +34,11 @@ public record SavePersonalRequest(
     ) {}
 
     /** 자기소개서 스킬 요청 Record  */
-    public static record PersonalSkillRequest(String skillName) {}
+    public static record PersonalSkillRequest(String skillName, String skillCategory) {}
+
+    /** 자기소개서 자격증 요청 Record  */
+    public static record PersonalCertificateRequest(
+        String certificateName, 
+        String certificateAcquisitionOrganization, 
+        String certificateAcquisitionDate) {}
 }

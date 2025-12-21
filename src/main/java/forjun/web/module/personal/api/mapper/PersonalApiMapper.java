@@ -27,17 +27,21 @@ public class PersonalApiMapper {
         List<SavePersonalCommand.PersonalAward> awards = new ArrayList<>();
         List<SavePersonalCommand.PersonalSkill> skills = new ArrayList<>();
         List<SavePersonalCommand.PersonalCompany> companies = new ArrayList<>();
+        List<SavePersonalCommand.PersonalCertificate> certificates = new ArrayList<>();
 
         // Awards
         request.awards().forEach(a -> awards.add(new SavePersonalCommand.PersonalAward(a.awardName())));
 
         // Skills
-        request.skills().forEach(s -> skills.add(new SavePersonalCommand.PersonalSkill(s.skillName())));
+        request.skills().forEach(s -> skills.add(new SavePersonalCommand.PersonalSkill(s.skillName(), s.skillCategory())));
 
         // Companies
         request.companies().forEach(c -> companies.add(new SavePersonalCommand.PersonalCompany(c.companyName(), c.startDate(), c.endDate())));
 
-        return new SavePersonalCommand(userId, request.job(), request.name(), request.profile_image_url(), awards, skills, companies);
+        // Certificates
+        request.certificates().forEach(c -> certificates.add(new SavePersonalCommand.PersonalCertificate(c.certificateName(), c.certificateAcquisitionOrganization(), c.certificateAcquisitionDate())));
+
+        return new SavePersonalCommand(userId, request.job(), request.name(), request.profile_image_url(), awards, skills, companies, certificates);
     }
 
 
@@ -55,6 +59,8 @@ public class PersonalApiMapper {
         List<PersonalDetailResponse.PersonalCompanyResponse> companyList = new ArrayList<>();
         // 스킬 리스트
         List<PersonalDetailResponse.PersonalSkillResponse> skillList = new ArrayList<>();
+        // 자격증 리스트
+        List<PersonalDetailResponse.PersonalCertificateResponse> certificateList = new ArrayList<>();
 
         // 수상 리스트 추가
         personal.getPersonalAwards().forEach(award -> {
@@ -67,7 +73,8 @@ public class PersonalApiMapper {
         personal.getPersonalSkills().forEach(skill -> {
             skillList.add(
                 new PersonalDetailResponse.PersonalSkillResponse(
-                        skill.getSkillName()));
+                        skill.getSkillName(),
+                        skill.getSkillCategory()));
         });
 
         // 경력 리스트 추가
@@ -79,6 +86,15 @@ public class PersonalApiMapper {
                         company.getEndDate()));
         });
 
+        // 자격증 리스트 추가
+        personal.getPersonalCertificates().forEach(certificate -> {
+            certificateList.add(
+                new PersonalDetailResponse.PersonalCertificateResponse(
+                        certificate.getCertificateName(),
+                        certificate.getCertificateAcquisitionOrganization(),
+                        certificate.getCertificateAcquisitionDate()));
+        });
+
 
         return new PersonalDetailResponse(
             personal.getId(),
@@ -87,7 +103,8 @@ public class PersonalApiMapper {
             resourceDomain + resourceUrl + personal.getProfile_image_url(),
             awardList,
             companyList,
-            skillList
+            skillList,
+            certificateList
         );
     }
 }

@@ -7,6 +7,7 @@ import forjun.web.module.personal.domain.Personal;
 import forjun.web.module.personal.domain.value.PersonalAward;
 import forjun.web.module.personal.domain.value.PersonalCompany;
 import forjun.web.module.personal.domain.value.PersonalSkill;
+import forjun.web.module.personal.domain.value.PersonalCertificate;
 
 public class PersonalFactory {
     
@@ -29,10 +30,14 @@ public class PersonalFactory {
                 .map(data -> PersonalAward.builder().awardName(data.awardName()).build())
                 .collect(Collectors.toList()))
             .personalSkills(command.skills().stream()
-                .map(data -> PersonalSkill.builder().skillName(data.skillName()).build())
+                .map(data -> PersonalSkill.builder().skillName(data.skillName()).skillCategory(data.skillCategory()).build())
                 .collect(Collectors.toList()))
             .personalCompanys(command.companies().stream()
                 .map(data -> PersonalCompany.builder().companyName(data.companyName()).startDate(data.startDate()).endDate(data.endDate()).build())
+                .collect(Collectors.toList()))
+
+            .personalCertificates(command.certificates().stream()
+                .map(data -> PersonalCertificate.builder().certificateName(data.certificateName()).certificateAcquisitionOrganization(data.certificateAcquisitionOrganization()).certificateAcquisitionDate(data.certificateAcquisitionDate()).build())
                 .collect(Collectors.toList()))
             .build();
     }

@@ -47,6 +47,11 @@ public class PersonalEntity {
     @OneToMany(mappedBy = "personal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PersonalAwardEntity> awards = new ArrayList<>();
 
+    // 자격증
+    @Builder.Default
+    @OneToMany(mappedBy = "personal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PersonalCertificateEntity> certificates = new ArrayList<>();
+
     // ==========================
     // 기능 메서드
     // ==========================
@@ -55,7 +60,9 @@ public class PersonalEntity {
     public PersonalEntity update(Personal personal ,
                                  List<PersonalAwardEntity> newAwards,
                                  List<PersonalSkillEntity> newSkills,
-                                 List<PersonalCompanyEntity> newCompanies)
+                                 List<PersonalCompanyEntity> newCompanies,
+                                 List<PersonalCertificateEntity> newCertificates
+                                )
     {
         this.name = personal.getName();
         this.job = personal.getJob();
@@ -72,6 +79,9 @@ public class PersonalEntity {
 
         this.awards.clear();
         newAwards.forEach(this::addAward);
+
+        this.certificates.clear();
+        newCertificates.forEach(this::addCertificate);
         return this;
     }
 
@@ -114,4 +124,16 @@ public class PersonalEntity {
         awards.remove(award);
         award.setPersonal(null);
     }
+
+    /** 자격증 추가 */
+    public void addCertificate(PersonalCertificateEntity certificate) {
+        certificates.add(certificate);
+        certificate.setPersonal(this);
+    }
+
+    /** 자격증 삭제 */
+    public void removeCertificate(PersonalCertificateEntity certificate) {
+        certificates.remove(certificate);
+        certificate.setPersonal(null);
+    }       
 }

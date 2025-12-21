@@ -18,14 +18,20 @@ public record SavePersonalCommand(
     /** 스킬 명령 */
     List<PersonalSkill> skills, 
     /** 경력 명령 */
-    List<PersonalCompany> companies
+    List<PersonalCompany> companies,
+
+    /** 자격증 명령 */
+    List<PersonalCertificate> certificates
 ) {
 
     /** 수상 명령 */
     public static record PersonalAward(String awardName) {}
     /** 스킬 명령 */
-    public static record PersonalSkill(String skillName) {}
+    public static record PersonalSkill(String skillName, String skillCategory) {}
     /** 경력 명령 */
     public static record PersonalCompany(String companyName, String startDate, String endDate) {}
+
+    /** 자격증 명령 */
+    public static record PersonalCertificate(String certificateName, String certificateAcquisitionOrganization, String certificateAcquisitionDate) {}
 
 }
