@@ -8,7 +8,7 @@ import java.io.IOException;
 public interface FileStoragePort {
 
     //파일 업로드
-    UploadFile save(MultipartFile file) throws IOException;
+    UploadFile save(MultipartFile file , String directory) throws IOException;
 
     //파일 삭제
     void delete(String storedPath);

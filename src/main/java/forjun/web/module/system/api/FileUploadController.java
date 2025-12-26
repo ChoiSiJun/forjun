@@ -28,10 +28,11 @@ public class FileUploadController {
     @Operation(summary = "파일 업로드", description = "파일 업로드")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<UploadedFileResponse> upload(
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("directory") String directory) {
 
         return ResponseEntity.ok(
-                fileUploadApiMapper.toUploadedFileResponse(uploadUsecase.uploadFile(file))
+                fileUploadApiMapper.toUploadedFileResponse(uploadUsecase.uploadFile(file, directory))
         );
     }
 

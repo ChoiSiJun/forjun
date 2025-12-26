@@ -22,7 +22,7 @@ public class FileUploadService implements UploadUsecase {
     private final FilePersistencePort filePersistencePort;
 
     @Override
-    public UploadFile uploadFile(MultipartFile multipartFile) {
+    public UploadFile uploadFile(MultipartFile multipartFile , String directory) {
 
         if (multipartFile == null || multipartFile.isEmpty() || Objects.requireNonNull(multipartFile.getOriginalFilename()).isEmpty()) {
             throw new AppException(ErrorCode.FILE_NOT_FOUND);
@@ -32,13 +32,13 @@ public class FileUploadService implements UploadUsecase {
 
         try {
             //기존 파일 해쉬데이터 확인
-            uploadFile = filePersistencePort.getFileByHashData(DigestUtils.sha256Hex(multipartFile.getInputStream()));
+            uploadFile = filePersistencePort.getFileByHashData(DigestUtils.sha256Hex(multipartFile.getInputStream() + directory));
             if(uploadFile != null) {
                 return uploadFile;
             }
 
             // 1. 파일 시스템에 저장 (IO 작업)
-            uploadFile = fileStoragePort.save(multipartFile);
+            uploadFile = fileStoragePort.save(multipartFile , directory);
 
             // 2. 파일 메타데이터 DB 저장 (DB 트랜잭션 범위)
             filePersistencePort.save(uploadFile);

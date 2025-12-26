@@ -50,17 +50,24 @@ public class LocalFileStorageAdapter implements FileStoragePort {
     }
 
     @Override
-    public UploadFile save(MultipartFile file) {
+    public UploadFile save(MultipartFile file , String directory) {
 
         String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         String fileId = UUID.randomUUID().toString();
         String fileExtension = getFileExtension(originalFilename);
         String storedFileName = fileId + "." + fileExtension;
 
+        if(StringUtils.hasText(directory)) {
+            directory = directory + "/";
+        }else{
+            directory = "";
+        }
+        storedFileName = directory + storedFileName;
         Path targetLocation = Paths.get(resourcePath).resolve(storedFileName);
         LocalDateTime uploadDate = LocalDateTime.now();
 
         try {
+            Files.createDirectories(targetLocation.getParent());
             Files.copy(file.getInputStream(), targetLocation);
 
             return UploadFile.builder()
@@ -71,7 +78,7 @@ public class LocalFileStorageAdapter implements FileStoragePort {
                     .size(file.getSize())
                     .contentType(file.getContentType())
                     .uploadAt(uploadDate)
-                    .hashData(DigestUtils.sha256Hex(file.getInputStream()))
+                    .hashData(DigestUtils.sha256Hex(file.getInputStream() + directory))
                     .build();
 
         } catch (IOException e) {
