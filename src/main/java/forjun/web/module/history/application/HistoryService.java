@@ -51,7 +51,7 @@ public class HistoryService implements HistoryQuery , HistoryUsecase {
     public void deleteHistory(Integer historyId) {
 
         //히스토리 존재여부 체크
-        if(historyJpaPort.existsHistory(historyId)) {
+        if(!historyJpaPort.existsHistory(historyId)) {
             throw AppException.of(ErrorCode.HISTORY_NOT_FOUND, historyId);
         }
 
