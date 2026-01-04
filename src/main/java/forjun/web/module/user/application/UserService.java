@@ -60,16 +60,26 @@ public class UserService implements UserQuery, UserUsecase {
     @Override
     public void changeUserInfo(ChangeUserInfoCommand command) {
 
-        //기존 가입정보 있는지 확인.
-        if(!userJpaPort.existsById(command.id())){
-            throw AppException.of(ErrorCode.USER_NOT_FOUND, command.id());
+        //기존 가입정보 있는지 확인 (userId로 조회)
+        User existingUser = userJpaPort.getUserByUserId(command.userId());
+        if(existingUser == null){
+            throw AppException.of(ErrorCode.USER_NOT_FOUND, command.userId());
         }
 
-        //유저 정보 수정 도메인 생성
-        User user = UserFactory.createUser(command);
+        //기존 정보를 유지하면서 수정할 필드만 업데이트
+        User updatedUser = User.builder()
+                .id(existingUser.getId())
+                .userId(existingUser.getUserId())
+                .password(existingUser.getPassword())
+                .userName(command.userName())
+                .email(command.email())
+                .authority(existingUser.getAuthority())
+                .historyPrivate(command.historyPrivate())
+                .personalPrivate(command.personalPrivate())
+                .build();
 
         //유저 정보 수정
-        userJpaPort.saveUser(user);
+        userJpaPort.saveUser(updatedUser);
     }
 
     @Override

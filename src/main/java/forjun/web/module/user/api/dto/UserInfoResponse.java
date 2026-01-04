@@ -4,7 +4,10 @@ package forjun.web.module.user.api.dto;
 public record UserInfoResponse(
     String userId,
     String userName,
-    String email
+    String email,
+    String authority,
+    String historyPrivate,
+    String personalPrivate
 ) {
 } 
 

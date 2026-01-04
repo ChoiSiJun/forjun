@@ -26,7 +26,7 @@ public class UserFactory {
     /** 유저 정보 수정 도메인 생성 */
     public static User createUser(ChangeUserInfoCommand command) {
         return User.builder()
-            .id(command.id())
+            .userId(command.userId())
             .userName(command.userName())
             .email(command.email())
             .historyPrivate(PrivateStatus.valueOf(command.historyPrivate()).name())
