@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class HistoryPublicApi {
 
     @Operation(summary = "히스토리 리스트 가져오기", description = "히스토리 리스트 가져오기")
     @GetMapping("/list")
-    public ResponseEntity<List<HistoryDetailResponse>> getHistoryList(@Valid @RequestBody GetPublicHistoryListRequest request) {
+    public ResponseEntity<List<HistoryDetailResponse>> getHistoryList(@Valid @ModelAttribute GetPublicHistoryListRequest request) {
 
         //히스토리 리스트 조회
         return ResponseEntity.ok(historyApiMapper.toHistoryReponseList(
