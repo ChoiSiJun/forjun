@@ -15,6 +15,6 @@ public abstract class FileUploadApiMapper {
     @Value("${file.upload.resource-url}")
     protected String resourceUrl;
 
-    @Mapping(target = "url", expression = "java(resourceDomain + resourceUrl + uploadFile.getUrl())")
+    @Mapping(target = "url", expression = "java(uploadFile.getUrl())")
     public abstract UploadedFileResponse toUploadedFileResponse(UploadFile uploadFile);
 }

@@ -68,8 +68,11 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         
         // 1. 허용할 출처 (정확함)
-        configuration.setAllowedOrigins(List.of("http://localhost:3001")); 
-        
+        configuration.setAllowedOrigins(List.of(
+            "http://localhost:3001", 
+            "http://forjun.cloud",   // http 프로토콜 명시
+            "https://forjun.cloud"   // https를 사용 중이라면 반드시 포함
+        ));        
         // 2. 허용할 메서드 (수정됨: 순수 HTTP 메서드만 남깁니다)
         // 💡 resourceUrl + "**"를 여기서 제거해야 합니다!
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));

@@ -57,8 +57,7 @@ public class PersonalController {
         // 자기소개서 조회
         return ResponseEntity.ok(
             personalApiMapper.toPersonalResponseDto(
-                personalQuery.getPersonal(new GetPersonalQuery(user.getUserId()))
-            )
+                personalQuery.getPersonal(new GetPersonalQuery(user.getUserId())) )
         );
     }
 }
