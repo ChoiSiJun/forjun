@@ -45,6 +45,11 @@ public class HistoryFactory {
         if(command == null) {
             throw new IllegalArgumentException("command is null");
         }
+
+        if(command.userId() == null || command.userId().isEmpty()) {
+            throw new IllegalArgumentException("userId is null or empty");
+        }
+
         if(command.id() == null) {
             throw new IllegalArgumentException("id is null");
         }
@@ -62,6 +67,7 @@ public class HistoryFactory {
         }
         return History.builder()
             .id(command.id())
+                .userId(command.userId())
             .category(command.category())
             .project(command.project())
             .subject(command.subject())

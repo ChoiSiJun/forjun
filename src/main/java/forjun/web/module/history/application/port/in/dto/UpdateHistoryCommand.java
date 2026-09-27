@@ -5,7 +5,9 @@ import java.util.List;
 
 /** 히스토리 수정 명령 */
 public record UpdateHistoryCommand(
-    
+
+    /** 유저 아이디 **/
+    String userId,
     /** 히스토리 아이디 */
     Integer id,
     /** 카테고리 */
@@ -21,6 +23,7 @@ public record UpdateHistoryCommand(
     /** 히스토리 시작날짜 */
     LocalDate historyStartDate,
     /** 히스토리 종료날짜 */
-    LocalDate historyEndDate) {
+    LocalDate historyEndDate
+) {
     
 }

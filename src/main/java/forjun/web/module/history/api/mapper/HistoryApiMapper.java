@@ -5,6 +5,7 @@ import forjun.web.module.history.api.dto.GetPublicHistoryListRequest;
 import forjun.web.module.history.api.dto.HistoryDetailResponse;
 import forjun.web.module.history.api.dto.UpdateHistoryRequest;
 import forjun.web.module.history.application.port.in.dto.CreateHistoryCommand;
+import forjun.web.module.history.application.port.in.dto.DeleteHistoryCommand;
 import forjun.web.module.history.application.port.in.dto.GetHistoryQuery;
 import forjun.web.module.history.application.port.in.dto.GetHistorysQuery;
 import forjun.web.module.history.application.port.in.dto.GetPublicHistorysQuery;
@@ -27,11 +28,14 @@ public interface HistoryApiMapper {
 
     /** 히스토리 수정 명령 매핑 */
     @Mapping(target = "id" , source = "historyId")
-    UpdateHistoryCommand toUpdateHistoryCommand(int historyId, UpdateHistoryRequest request);
+    UpdateHistoryCommand toUpdateHistoryCommand(String userId , int historyId, UpdateHistoryRequest request);
 
     /** 히스토리 조회 쿼리 매핑 */
     @Mapping(target = "historyId" , source = "historyId")
-    GetHistoryQuery toGetHistoryQuery(Integer historyId);
+    GetHistoryQuery toGetHistoryQuery(String userId, Integer historyId);
+
+    /** 히스토리 삭제 명령 매핑 */
+    DeleteHistoryCommand toDeleteHistoryCommand(String userId, Integer historyId);
 
     /** 히스토리 리스트 조회 쿼리 매핑 */
     @Mapping(target = "category" , source = "category")

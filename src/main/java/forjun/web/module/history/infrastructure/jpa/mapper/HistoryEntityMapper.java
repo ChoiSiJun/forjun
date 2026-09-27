@@ -58,6 +58,7 @@ public class HistoryEntityMapper {
 
         return History.builder()
                 .id(entity.getId())
+                .userId(entity.getUserId())
                 .category(entity.getCategory())
                 .project(entity.getProject())
                 .subject(entity.getSubject())

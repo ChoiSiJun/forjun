@@ -5,6 +5,7 @@ import forjun.web.exception.ErrorCode;
 import forjun.web.module.history.application.port.in.HistoryQuery;
 import forjun.web.module.history.application.port.in.HistoryUsecase;
 import forjun.web.module.history.application.port.in.dto.CreateHistoryCommand;
+import forjun.web.module.history.application.port.in.dto.DeleteHistoryCommand;
 import forjun.web.module.history.application.port.in.dto.GetHistoryQuery;
 import forjun.web.module.history.application.port.in.dto.GetHistorysQuery;
 import forjun.web.module.history.application.port.in.dto.GetPublicHistorysQuery;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,20 +43,31 @@ public class HistoryService implements HistoryQuery , HistoryUsecase {
     @Override
     public void updateHistory(UpdateHistoryCommand command) {
 
+        //히스토리 존재 여부 확인
+        History existing = historyJpaPort.getHistory(command.id())
+                .orElseThrow(() -> AppException.of(ErrorCode.HISTORY_NOT_FOUND, command.id()));
+
+        // 저장된 소유자와 인증된 요청 사용자를 비교한다.
+        if (existing.getUserId() == null || !existing.getUserId().equals(command.userId())) {
+            throw AppException.of(ErrorCode.HISTORY_NOT_ACCESS, command.id());
+        }
+
         //히스토리 도메인 생성 후 수정
         historyJpaPort.updateHistory(HistoryFactory.createHistory(command));
     }
 
     @Override
-    public void deleteHistory(Integer historyId) {
+    public void deleteHistory(DeleteHistoryCommand command) {
 
-        //히스토리 존재여부 체크
-        if(!historyJpaPort.existsHistory(historyId)) {
-            throw AppException.of(ErrorCode.HISTORY_NOT_FOUND, historyId);
+        History existing = historyJpaPort.getHistory(command.historyId())
+                .orElseThrow(() -> AppException.of(ErrorCode.HISTORY_NOT_FOUND, command.historyId()));
+
+        if (existing.getUserId() == null || !existing.getUserId().equals(command.userId())) {
+            throw AppException.of(ErrorCode.HISTORY_NOT_ACCESS, command.historyId());
         }
 
         //히스토리 삭제
-        historyJpaPort.deleteHistory(historyId);
+        historyJpaPort.deleteHistory(command.historyId());
     }
 
     @Override
@@ -70,16 +81,15 @@ public class HistoryService implements HistoryQuery , HistoryUsecase {
     public History getHistory(GetHistoryQuery query) {
 
         //히스토리 조회
-        Optional<History> historyOptional= historyJpaPort.getHistory(query.historyId());
+        History existing = historyJpaPort.getHistory(query.historyId())
+                .orElseThrow(() -> AppException.of(ErrorCode.HISTORY_NOT_FOUND, query.historyId()));
 
-        //히스토리 존재여부 체크
-        if(historyOptional.isEmpty()){
-            //히스토리 존재하지 않음
-            throw AppException.of(ErrorCode.HISTORY_NOT_FOUND,query.historyId());
+        if (existing.getUserId() == null || !existing.getUserId().equals(query.userId())) {
+            throw AppException.of(ErrorCode.HISTORY_NOT_ACCESS, query.historyId());
         }
 
         //히스토리 반환
-        return historyOptional.get();
+        return existing;
     }
 
     /** 퍼블릭 히스토리 리스트 조회 */

@@ -3,7 +3,7 @@ spring:
     name: forjun
 
   datasource:
-    url: jdbc:postgresql://34.22.66.22:5432/forjun
+    url: jdbc:postgresql://localhost:5432/forjun
     username: forjun
     password: forjun
     driver-class-name: org.postgresql.Driver

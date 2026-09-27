@@ -41,8 +41,10 @@ public class HistoryApi {
     /** 히스토리 업데이트 */
     @Operation(summary = "히스토리 업데이트", description = "히스토리 업데이트")
     @PutMapping("/{historyId}")
-    public ResponseEntity<Void> updateHistory(@PathVariable int historyId, @RequestBody UpdateHistoryRequest request){
-        historyUsecase.updateHistory(historyApiMapper.toUpdateHistoryCommand(historyId, request));
+    public ResponseEntity<Void> updateHistory(@AuthenticationPrincipal CustomUserDetail user , @PathVariable int historyId, @RequestBody UpdateHistoryRequest request){
+
+        //히스토리 유저체크
+        historyUsecase.updateHistory(historyApiMapper.toUpdateHistoryCommand(user.getUserId() , historyId, request));
         return ResponseEntity.ok().build();
     }
 
@@ -51,7 +53,7 @@ public class HistoryApi {
     @GetMapping("/{historyId}")
     public ResponseEntity<HistoryDetailResponse> getHistory(@AuthenticationPrincipal CustomUserDetail user, @PathVariable int historyId)
     {
-        return ResponseEntity.ok(historyApiMapper.toHistoryResponse(historyQuery.getHistory(historyApiMapper.toGetHistoryQuery(historyId))));
+        return ResponseEntity.ok(historyApiMapper.toHistoryResponse(historyQuery.getHistory(historyApiMapper.toGetHistoryQuery(user.getUserId(), historyId))));
     }
 
     /** 히스토리 리스트 가져오기*/
@@ -70,8 +72,8 @@ public class HistoryApi {
     /** 히스토리 삭제 */
     @Operation(summary = "히스토리 삭제", description = "히스토리 삭제")
     @DeleteMapping("/{historyId}")
-    public ResponseEntity<Void> deleteHistory(@PathVariable int historyId) {
-        historyUsecase.deleteHistory(historyId);
+    public ResponseEntity<Void> deleteHistory(@AuthenticationPrincipal CustomUserDetail user, @PathVariable int historyId) {
+        historyUsecase.deleteHistory(historyApiMapper.toDeleteHistoryCommand(user.getUserId(), historyId));
         return ResponseEntity.ok().build();
     }
 }
